@@ -5,7 +5,7 @@ class UserCreate(BaseModel):
     password: str = Field(
         ..., 
         min_length=8, 
-        max_length=100,
+        max_length=72,
         description="Password must be between 8 and 100 characters")
 
 class UserResponse(BaseModel):

@@ -54,3 +54,17 @@ def decode_token(token: str):
         raise HTTPException(status_code=401, detail="Token has expired")
     except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
+
+def hash_token(token: str) -> str:
+    token_bytes = token.encode('utf-8')  
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(token_bytes, salt)
+    
+    return hashed.decode('utf-8')
+
+def verify_token_hash(token: str, token_hash: str) -> bool:
+    return bcrypt.checkpw(
+        token.encode('utf-8'), 
+        token_hash.encode('utf-8')
+    )
+    

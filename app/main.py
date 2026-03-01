@@ -1,5 +1,10 @@
 from fastapi import FastAPI
 from app.api.routes import auth
+from app.core.database import engine
+from sqlalchemy import text
+from fastapi import Depends
+from app.api.deps import get_current_user
+from app.models.user import User
 
 
 
@@ -12,12 +17,18 @@ app.include_router(auth.router)
 def health_check():
     return {"status":"alive"}
 
-
-from app.core.database import engine
-from sqlalchemy import text
-
 @app.get("/db-check")
 def db_check():
     with engine.connect() as connection:
         result = connection.execute(text("SELECT 1"))
         return {"db": "connected"}
+ 
+    
+@app.get("/me")
+def get_me(current_user: User = Depends(get_current_user)):
+    return {
+        "id": current_user.id,
+        "email": current_user.email
+    }
+
+

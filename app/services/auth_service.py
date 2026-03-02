@@ -58,16 +58,21 @@ class AuthService:
             raise HTTPException(status_code=401, detail="Invalid refresh token")
 
         user_id = int(payload.get("sub"))
-        stored = RefreshTokenRepository.get_active_token(db, user_id)
+        stored = RefreshTokenRepository.get_valid_token(db, user_id)
 
-        if not stored or not verify_token_hash(refresh_token, stored.token_hash):
-            RefreshTokenRepository.revoke_all_for_user(db, user_id)
+        if not stored:
             raise HTTPException(
                 status_code=401, 
-                detail="Security compromise detected. All sessions revoked."
+                detail="Token not found"
+            )    
+        
+        if not verify_token_hash(refresh_token, stored.token_hash):
+            raise HTTPException(
+                status_code=401, 
+                detail="Invalid token"
             )
 
-        RefreshTokenRepository.revoke(db, stored)
+        RefreshTokenRepository.revoke_all_for_user(db, user_id)
 
         new_access = create_access_token(str(user_id))
         new_refresh = create_refresh_token(str(user_id))
@@ -84,3 +89,27 @@ class AuthService:
             "refresh_token": new_refresh,
             "token_type": "bearer"
         }
+    
+
+    @staticmethod
+    def logout(db: Session, refresh_token: str):
+
+        payload = decode_token(refresh_token)
+
+        if not payload or payload.get("type") != "refresh":
+            raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+        user_id = int(payload.get("sub"))
+
+        stored = RefreshTokenRepository.get_valid_token(db, user_id)
+
+        if not stored:
+            raise HTTPException(status_code=401, detail="Token not found")
+
+        if not verify_token_hash(refresh_token, stored.token_hash):
+            raise HTTPException(status_code=401, detail="Invalid token")
+
+        RefreshTokenRepository.revoke_all_for_user(db, user_id)
+
+        return {"message": "Logged out successfully"}
+

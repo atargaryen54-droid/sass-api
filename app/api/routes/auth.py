@@ -26,3 +26,10 @@ def refresh(
     db: Session = Depends(get_db)
 ):
     return AuthService.refresh(db, refresh_token)
+
+@router.post("/logout")
+def logout(
+    refresh_token: str = Body(...),
+    db: Session = Depends(get_db)
+):
+    return AuthService.logout(db, refresh_token)

@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from app.core.config import settings
 import bcrypt
+import hashlib
 
 def hash_password(password: str) -> str:
   
@@ -56,15 +57,17 @@ def decode_token(token: str):
         raise HTTPException(status_code=401, detail="Invalid token")
 
 def hash_token(token: str) -> str:
-    token_bytes = token.encode('utf-8')  
+    token_hash_pre = hashlib.sha256(token.encode('utf-8')).hexdigest()
+    token_bytes = token_hash_pre.encode('utf-8')  
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(token_bytes, salt)
     
     return hashed.decode('utf-8')
 
 def verify_token_hash(token: str, token_hash: str) -> bool:
+    token_hash_pre = hashlib.sha256(token.encode('utf-8')).hexdigest()
     return bcrypt.checkpw(
-        token.encode('utf-8'), 
+        token_hash_pre.encode('utf-8'), 
         token_hash.encode('utf-8')
     )
     

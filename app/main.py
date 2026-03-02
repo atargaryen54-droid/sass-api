@@ -5,6 +5,7 @@ from sqlalchemy import text
 from fastapi import Depends
 from app.api.deps import get_current_user
 from app.models.user import User
+from sqladmin import Admin, ModelView
 
 
 
@@ -31,4 +32,10 @@ def get_me(current_user: User = Depends(get_current_user)):
         "email": current_user.email
     }
 
+admin = Admin(app, engine)
+
+class UserAdmin(ModelView, model=User):
+    column_list = [User.id, User.email]
+
+admin.add_view(UserAdmin)
 

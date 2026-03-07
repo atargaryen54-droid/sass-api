@@ -27,7 +27,8 @@ class AuthService:
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid credentials"
             )
-
+        
+        RefreshTokenRepository.revoke_all_for_user(db, user.id)
         access_token = create_access_token(str(user.id))
         refresh_token = create_refresh_token(str(user.id))
 

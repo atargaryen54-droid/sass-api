@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 from datetime import datetime, timedelta, timezone
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
 from app.core.config import settings
 import bcrypt
 import hashlib
@@ -55,7 +55,7 @@ def decode_token(token: str):
         raise HTTPException(status_code=401, detail="Token has expired")
     except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
-
+    
 def hash_token(token: str) -> str:
     token_hash_pre = hashlib.sha256(token.encode('utf-8')).hexdigest()
     token_bytes = token_hash_pre.encode('utf-8')  
@@ -70,4 +70,3 @@ def verify_token_hash(token: str, token_hash: str) -> bool:
         token_hash_pre.encode('utf-8'), 
         token_hash.encode('utf-8')
     )
-    

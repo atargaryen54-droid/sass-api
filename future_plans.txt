@@ -1,0 +1,4 @@
+Authentication
+    1. multi-device login with device fingerprinting
+    2. password change route and logic along with email change
+

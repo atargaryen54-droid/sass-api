@@ -51,10 +51,17 @@ def decode_token(token: str):
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token has expired")
-    except jwt.JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+    except Exception as e:
+        error_type = type(e).__name__
+        if error_type == "ExpiredSignatureError":
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, 
+                detail="Token has expired"
+            )
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, 
+            detail="Could not validate credentials"
+        )
     
 def hash_token(token: str) -> str:
     token_hash_pre = hashlib.sha256(token.encode('utf-8')).hexdigest()

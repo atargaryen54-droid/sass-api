@@ -1,0 +1,2 @@
+- check on how project_id gets passed to client model
+    -> is the user gonna provide the id? highly unlikely

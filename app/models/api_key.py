@@ -13,7 +13,7 @@ class ApiKey(Base):
 
     key_prefix = Column(String, index=True)
 
-    key_hash = Column(String, nullable=False, index=True, unique=True)
+    key_hash = Column(String, nullable=False)
 
     revoked = Column(Boolean, default=False)
 

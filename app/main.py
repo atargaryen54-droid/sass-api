@@ -6,12 +6,14 @@ from fastapi import Depends
 from app.api.deps import get_current_user
 from app.models.user import User
 from sqladmin import Admin, ModelView
+from app.api.routes import api_keys
 
 
 
 app = FastAPI()
 
 app.include_router(auth.router)
+app.include_router(api_keys.router)
 
 
 @app.get("/")

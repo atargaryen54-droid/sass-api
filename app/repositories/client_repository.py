@@ -1,0 +1,21 @@
+from sqlalchemy.orm import Session
+from app.models.client import Client
+
+
+class ClientRepository:
+
+    @staticmethod
+    def create(db: Session, project_id: int, name: str, email: str | None,    external_id: str | None):
+
+        client = Client(
+            project_id=project_id,
+            name=name,
+            email=email,
+            external_id=external_id
+        )
+
+        db.add(client)
+        db.commit()
+        db.refresh(client)
+
+        return client

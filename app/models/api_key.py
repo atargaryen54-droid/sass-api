@@ -7,11 +7,13 @@ class ApiKey(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    client_id = Column(Integer, ForeignKey("clients.id", ondelete="CASCADE"), nullable=False, index=True)
 
     name = Column(String, nullable=False)
 
-    key_prefix = Column(String, index=True)
+    key_prefix = Column(String, index=True, nullable=False)
+
+    key_mask = Column(String, nullable=False )
 
     key_hash = Column(String, nullable=False)
 

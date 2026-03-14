@@ -1,2 +1,7 @@
+March 11, 2026
 - check on how project_id gets passed to client model
     -> is the user gonna provide the id? highly unlikely
+
+March 14 2026
+    1. creating a client with a project_id that doesn't exist
+    2. creating an api_key with a client_id that doesn't exist 

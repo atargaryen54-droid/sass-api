@@ -19,3 +19,7 @@ class ClientRepository:
         db.refresh(client)
 
         return client
+
+    @staticmethod
+    def get_by_id(db: Session, client_id: int):
+        return db.query(Client).filter(Client.id == client_id).first()

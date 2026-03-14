@@ -17,3 +17,7 @@ class ProjectRepository:
         db.refresh(project)
 
         return project
+    
+    @staticmethod
+    def get_by_id(db: Session, project_id: int):
+        return db.query(Project).filter(Project.id == project_id).first()

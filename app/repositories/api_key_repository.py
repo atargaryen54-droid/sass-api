@@ -4,12 +4,13 @@ from app.models.api_key import ApiKey
 class ApiKeyRepository:
 
     @staticmethod
-    def create(db: Session, user_id: int, name: str, prefix: str, key_hash: str):
+    def create(db: Session, client_id: int, name: str, prefix: str, key_mask: str, key_hash: str):
 
         key = ApiKey(
-            user_id=user_id,
+            client_id=client_id,
             name=name,
             key_prefix=prefix,
+            key_mask=key_mask,
             key_hash=key_hash
         )
 
@@ -18,3 +19,4 @@ class ApiKeyRepository:
         db.refresh(key)
 
         return key
+    

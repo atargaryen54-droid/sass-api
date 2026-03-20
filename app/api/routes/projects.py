@@ -5,23 +5,18 @@ from app.api.deps import get_db
 from app.api.deps import get_current_user
 
 from app.schemas.project import ProjectCreate, ProjectResponse
-from app.repositories.project_repository import ProjectRepository
+from app.services.project_service import ProjectService
 
 
 router = APIRouter(prefix="/projects", tags=["projects"])
 
 
 @router.post("", response_model=ProjectResponse)
-def create_project(
+def create(
     payload: ProjectCreate,
     db: Session = Depends(get_db),
-    user=Depends(get_current_user)
+    current_user=Depends(get_current_user)
 ):
-
-    project = ProjectRepository.create(
-        db=db,
-        user_id=user.id,
-        name=payload.name
-    )
-
+    project = ProjectService.create_project(db, name = payload.name, user_id = current_user.id)
+    
     return project

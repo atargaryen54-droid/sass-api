@@ -3,5 +3,11 @@ Authentication
     1. multi-device login with device fingerprinting
     2. password change route and logic along with email change
 
+March 20,2026
+Conveniences/basic management
+
+    1. need to have a route to see all the things we create, like users, clients and projects
+    2. routes to change names, emails, password and the like
+
 
 

@@ -14,6 +14,7 @@ class AuthService:
     @staticmethod
     def login(db: Session, email: str, password: str):
 
+        email = email.lower()
         user = UserRepository.get_by_email(db, email)
 
         if not user:

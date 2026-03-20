@@ -21,3 +21,10 @@ class ProjectRepository:
     @staticmethod
     def get_by_id(db: Session, project_id: int):
         return db.query(Project).filter(Project.id == project_id).first()
+    
+    @staticmethod
+    def get_by_name_and_user(db: Session, name: str, user_id: int):
+        return db.query(Project).filter(
+            Project.user_id == user_id, 
+            Project.name == name
+            ).first()

@@ -7,6 +7,7 @@ class UserService:
 
     @staticmethod
     def register_user(db: Session, email: str, password: str):
+        email = email.lower()
         existing = UserRepository.get_by_email(db, email)
         if existing:
             raise HTTPException(

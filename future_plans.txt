@@ -7,6 +7,7 @@ March 20,2026
 Conveniences/basic management
 
     1. need to have a route to see all the things we create, like users, clients and projects
+       aswell as deleting them or revoking them as needed 
     2. routes to change names, emails, password and the like
 
 

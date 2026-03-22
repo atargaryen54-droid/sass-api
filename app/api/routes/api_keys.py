@@ -20,18 +20,7 @@ def create_api_key(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
-    ApiKeyService.verify_ownership(db, user_id=current_user.id, client_id=payload.client_id)
+    raw_key = ApiKeyService.create_api_key(db, user_id=current_user.id, client_id=payload.client_id, name = payload.name)
     
-
-    raw_key, prefix, mask, hashed = ApiKeyService.generate_key()
-
-    ApiKeyRepository.create(
-        db=db,
-        client_id=payload.client_id,
-        name=payload.name,
-        prefix=prefix,
-        key_mask=mask,
-        key_hash=hashed
-    )
 
     return {"api_key": raw_key}

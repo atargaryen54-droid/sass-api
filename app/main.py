@@ -9,6 +9,7 @@ from sqladmin import Admin, ModelView
 from app.api.routes import api_keys
 from app.api.routes import clients
 from app.api.routes import projects
+from app.api.routes import usage
 
 
 
@@ -18,6 +19,7 @@ app.include_router(auth.router)
 app.include_router(api_keys.router)
 app.include_router(clients.router)
 app.include_router(projects.router)
+app.include_router(usage.router)
 
 
 

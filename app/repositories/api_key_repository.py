@@ -27,3 +27,12 @@ class ApiKeyRepository:
             ApiKey.name == name
             ).first()
     
+    @staticmethod
+    def find_by_prefix(db: Session, prefix: str):
+
+        return db.query(ApiKey).filter(
+            ApiKey.key_prefix == prefix,
+            ApiKey.revoked == False
+        ).first()
+
+    

@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.sql import func
 from app.core.database import Base
+from sqlalchemy.orm import relationship
 
 class Client(Base):
     __tablename__ = "clients"
@@ -14,5 +15,7 @@ class Client(Base):
     email = Column(String, nullable=True)
 
     external_id = Column(String, nullable=True)
+
+    api_keys = relationship("ApiKey", back_populates="client")
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())

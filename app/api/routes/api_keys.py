@@ -6,9 +6,6 @@ from app.api.deps import get_current_user
 
 from app.schemas.api_key import ApiKeyCreate, ApiKeyResponse
 from app.services.api_key_service import ApiKeyService
-from app.repositories.api_key_repository import ApiKeyRepository
-from app.repositories.client_repository import ClientRepository
-from app.repositories.project_repository import ProjectRepository
 from fastapi import HTTPException, status
 
 router = APIRouter(prefix="/api-keys", tags=["api-keys"])

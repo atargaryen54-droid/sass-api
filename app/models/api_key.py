@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.sql import func
 from app.core.database import Base
+from sqlalchemy.orm import relationship
 
 class ApiKey(Base):
     __tablename__ = "api_keys"
@@ -18,6 +19,8 @@ class ApiKey(Base):
     key_hash = Column(String, nullable=False)
 
     revoked = Column(Boolean, default=False)
+
+    client = relationship("Client", back_populates="api_keys")
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

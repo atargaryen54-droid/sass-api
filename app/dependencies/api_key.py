@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, Security, status
+from fastapi import Depends, HTTPException, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session, joinedload
 
@@ -20,7 +20,7 @@ def get_client_from_api_key(
     if not raw_key.startswith("sk_"):
         raise HTTPException(status_code=401, detail="Invalid API key format")
 
-    # 1. Extract prefix (e.g., sk_live_1234)
+    # 1. Extract prefix 
     prefix = raw_key[:12]
 
     # 2. Lookup key and Join Client in ONE query

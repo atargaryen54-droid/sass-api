@@ -4,3 +4,4 @@ from .api_key import ApiKey
 from .project import Project
 from .client import Client
 from .usage_event import UsageEvent
+from .pricing_rule import PricingRule

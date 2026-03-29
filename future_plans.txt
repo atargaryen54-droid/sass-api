@@ -10,5 +10,6 @@ Conveniences/basic management
        aswell as deleting them or revoking them as needed 
     2. routes to change names, emails, password and the like
 
-
-
+March 29,2025
+missing route
+    1. route to revoke api_keys

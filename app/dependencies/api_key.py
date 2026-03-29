@@ -39,4 +39,6 @@ def get_client_from_api_key(
     if not key_record.client:
         raise HTTPException(status_code=401, detail="Client account inactive")
 
-    return key_record.client
+    return {"client" : key_record.client,
+            "api_key": key_record
+    }

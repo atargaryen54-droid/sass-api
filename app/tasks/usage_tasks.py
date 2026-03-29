@@ -17,6 +17,7 @@ def process_usage_event(event: dict):
             quantity=event["quantity"],
             event_metadata=event.get("metadata")
         )
+        print("Processing event:", event)
 
         db.add(usage)
         db.commit()

@@ -12,7 +12,7 @@ router = APIRouter(prefix="/projects", tags=["projects"])
 
 
 @router.post("", response_model=ProjectResponse)
-def create(
+def create_project(
     payload: ProjectCreate,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)

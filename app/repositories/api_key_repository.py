@@ -24,7 +24,8 @@ class ApiKeyRepository:
     def get_by_name_and_client(db: Session, name: str, client_id: int):
         return db.query(ApiKey).filter(
             ApiKey.client_id == client_id, 
-            ApiKey.name == name
+            ApiKey.name == name,
+            ApiKey.revoked == False
             ).first()
     
     @staticmethod

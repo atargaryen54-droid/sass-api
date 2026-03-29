@@ -29,7 +29,7 @@ class ApiKeyService:
         if ApiKeyRepository.get_by_name_and_client(db, name = name, client_id = client_id ) is not None:
             raise HTTPException(
             status_code=409, 
-            detail=f"api-key '{name}' already exists for this client."
+            detail=f"active api-key with name '{name}' already exists for this client."
         )
         
         

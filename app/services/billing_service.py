@@ -3,6 +3,7 @@ from sqlalchemy import func
 
 from app.models.usage_event import UsageEvent
 from app.models.pricing_rule import PricingRule
+from app.core.utils import currency_round
 
 
 class BillingService:
@@ -32,14 +33,14 @@ class BillingService:
         output = []
         for row in results:
             unit_price = row.price_per_unit if row.price_per_unit is not None else 0.0
-            total_cost = row.total_quantity * unit_price
+            total_cost = currency_round(row.total_quantity * unit_price)
 
             output.append({
                 "client_id": row.client_id,
                 "event_type": row.event_type,
                 "quantity": row.total_quantity,
                 "unit_price": unit_price,
-                "total": total_cost,
+                "total": float(total_cost),
                 "warning": "No pricing rule found" if row.price_per_unit is None else None
             })
 

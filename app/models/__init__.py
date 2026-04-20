@@ -5,3 +5,5 @@ from .project import Project
 from .client import Client
 from .usage_event import UsageEvent
 from .pricing_rule import PricingRule
+from .invoice import Invoice
+from .invoice_item import InvoiceItem

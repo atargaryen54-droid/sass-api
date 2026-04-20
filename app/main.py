@@ -12,6 +12,7 @@ from app.api.routes import projects
 from app.api.routes import usage
 from app.api.routes import pricing
 from app.api.routes import billing
+from app.api.routes import invoices
 
 
 
@@ -24,6 +25,7 @@ app.include_router(projects.router)
 app.include_router(usage.router)
 app.include_router(pricing.router)
 app.include_router(billing.router)
+app.include_router(invoices.router)
 
 
 

@@ -28,7 +28,7 @@ def create_pricing_rule(
     rule = PricingRepository.create(
         db=db,
         project_id=payload.project_id,
-        event_type=payload.event_type,
+        event_type=payload.event_type.lower(),
         price=payload.price_per_unit
     )
 

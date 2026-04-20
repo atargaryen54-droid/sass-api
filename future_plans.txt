@@ -10,6 +10,14 @@ Conveniences/basic management
        aswell as deleting them or revoking them as needed 
     2. routes to change names, emails, password and the like
 
-March 29,2025
+March 29,2026
 missing route
     1. route to revoke api_keys
+
+April 20, 2026
+update 
+    1. update pricing rules(route and logic)
+data security
+    1. how do we manage users' data about clients
+subscription 
+    1. users need to subscribe to our sass-api service

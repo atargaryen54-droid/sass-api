@@ -37,7 +37,4 @@ class InvoiceRepository:
             )
             db.add(invoice_item)
 
-        db.commit()
-        db.refresh(invoice)
-
         return invoice

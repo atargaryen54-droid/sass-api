@@ -12,7 +12,7 @@ Conveniences/basic management
 
 March 29,2026
 missing route
-    1. route to revoke api_keys
+    1. route to revoke api_keys(with that update the name uniqueness checking logic to to add if token isn't revoked )
 
 April 20, 2026
 update 
@@ -21,3 +21,10 @@ data security
     1. how do we manage users' data about clients
 subscription 
     1. users need to subscribe to our sass-api service
+
+Jun 11, 2026
+usage event
+    1. make usage event name case insensitive, as they have to match with pricing   
+    2. also matching pricing rules and usage event by name exactly seems like a lot
+       of mistakes can be made because the same thing can be written in many ways so 
+       see if you can find a better way

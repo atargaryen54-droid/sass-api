@@ -14,6 +14,8 @@ class UsageEvent(Base):
 
     api_key_id = Column(Integer, ForeignKey("api_keys.id"), nullable=False)
 
+    invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=True)
+
     event_type = Column(String, nullable=False)
 
     quantity = Column(Integer, default=1)

@@ -35,5 +35,19 @@ class ApiKeyRepository:
             ApiKey.key_prefix == prefix,
             ApiKey.revoked == False
         ).first()
+    
+    @staticmethod
+    def get_by_client(
+        db: Session,
+        client_id: int
+    ):
+
+        return (
+            db.query(ApiKey)
+            .filter(ApiKey.client_id == client_id)
+            .order_by(ApiKey.created_at.desc())
+            .all()
+        )
+    
 
     

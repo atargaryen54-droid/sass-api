@@ -20,7 +20,10 @@ class ApiKey(Base):
 
     revoked = Column(Boolean, default=False)
 
+    revoked_at = Column(DateTime(timezone=True), nullable=True)
+
+    revoked_by = Column(Integer, nullable=True)
+
     client = relationship("Client", back_populates="api_keys")
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-

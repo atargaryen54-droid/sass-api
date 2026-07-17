@@ -28,3 +28,12 @@ usage event
     2. also matching pricing rules and usage event by name exactly seems like a lot
        of mistakes can be made because the same thing can be written in many ways so 
        see if you can find a better way
+
+July 17, 2026
+Ownership service
+    1. one service to check project, client and api_key Ownership
+API key management
+    1. work on revoked_by
+    2. prepare a separate api_versioning, so that we won't have production revoked,
+        production revoked then production not revoked, if versioning is used, production
+        would just be a permanent key whose previous versions were revoked. 

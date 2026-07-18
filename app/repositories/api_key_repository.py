@@ -37,11 +37,7 @@ class ApiKeyRepository:
         ).first()
     
     @staticmethod
-    def get_by_client(
-        db: Session,
-        client_id: int
-    ):
-
+    def get_by_client(db: Session, client_id: int):
         return (
             db.query(ApiKey)
             .filter(ApiKey.client_id == client_id)

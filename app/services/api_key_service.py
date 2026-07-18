@@ -39,15 +39,20 @@ class ApiKeyService:
         
         raw_key, prefix, mask, hashed = ApiKeyService.generate_key()
 
-        ApiKeyRepository.create(
-            db=db,
-            client_id=client_id,
-            name=name,
-            prefix=prefix,
-            key_mask=mask,
-            key_hash=hashed
+        new_api_key = ApiKeyRepository.create(
+                db=db,
+                client_id=client_id,
+                name=name,
+                prefix=prefix,
+                key_mask=mask,
+                key_hash=hashed
         )
-        return raw_key
+
+        return {
+            "external_id": new_api_key.external_id,
+            "name": name,
+            "api_key": raw_key
+        }
     
     @staticmethod
     def generate_key():
@@ -84,14 +89,14 @@ class ApiKeyService:
         return ApiKeyRepository.get_by_client(db, client_id)
     
     @staticmethod
-    def revoke_key(db: Session, user_id: int,api_key_id: int):
+    def revoke_key(db: Session, user_id: int,api_key_external_id: str):
 
         api_key = (
             db.query(ApiKey)
             .join(Client, ApiKey.client_id == Client.id)
             .join(Project, Client.project_id == Project.id)
             .filter(
-                ApiKey.id == api_key_id,
+                ApiKey.external_id == api_key_external_id,
                 Project.user_id == user_id
             )
             .first()
@@ -108,6 +113,57 @@ class ApiKeyService:
             api_key.revoked_at = datetime.now()
             db.commit()
         return api_key
+    
+    @staticmethod
+    def rotate_key(db: Session, user_id: int, api_key_external_id: str):
+        
+        api_key = (
+            db.query(ApiKey)
+            .join(Client, ApiKey.client_id == Client.id)
+            .join(Project, Client.project_id == Project.id)
+            .filter(
+                ApiKey.external_id == api_key_external_id,
+                Project.user_id == user_id
+            )
+            .first()
+        )
+        
+        if not api_key:
+            raise HTTPException(
+                status_code=404,
+                detail="API key not found."
+            )
+        
+        if api_key.revoked:
+            raise HTTPException(
+                status_code=400,
+                detail="Cannot rotate a revoked API key."
+            )
+        
+        raw_key, prefix, mask, hashed = ApiKeyService.generate_key()
+
+        new_key = ApiKey(
+            client_id=api_key.client_id,
+            name=api_key.name,
+            key_prefix=prefix,
+            key_mask=mask,
+            key_hash=hashed
+        )
+
+        api_key.revoked = True
+        api_key.revoked_at = datetime.now()
+
+        db.add(new_key)
+        db.commit()
+        db.refresh(new_key)
+
+        return {
+
+            "message": "API key rotated successfully.",
+            "api_key": raw_key 
+        }
+
+
     
 
    

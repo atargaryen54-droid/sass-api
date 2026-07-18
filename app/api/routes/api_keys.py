@@ -11,16 +11,13 @@ from fastapi import HTTPException, status
 router = APIRouter(prefix="/api-keys", tags=["api-keys"])
 
 
-@router.post("", response_model=ApiKeyResponse)
+@router.post("")
 def create_api_key(
     payload: ApiKeyCreate,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
-    raw_key = ApiKeyService.create_api_key(db, user_id=current_user.id, client_id=payload.client_id, name = payload.name)
-    
-
-    return {"api_key": raw_key}
+    return  ApiKeyService.create_api_key(db, user_id=current_user.id, client_id=payload.client_id, name = payload.name)
 
 @router.get("/{client_id}", response_model=list[ApiKeyResponse])
 def list_api_keys(
@@ -35,14 +32,26 @@ def list_api_keys(
         client_id=client_id
     )
 
-@router.post("/{api_key_id}/revoke", response_model=ApiKeyRevokedResponse)
+@router.post("/{api_key_external_id}/revoke", response_model=ApiKeyRevokedResponse)
 def revoke_api_key(
-    api_key_id: int,
+    api_key_external_id: str,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     return ApiKeyService.revoke_key(
         db=db,
         user_id=current_user.id,
-        api_key_id=api_key_id,
+        api_key_external_id=api_key_external_id,
+    )
+
+@router.post("/{api_key_external_id}/rotate")
+def rotate_api_key(
+    api_key_external_id: str,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return ApiKeyService.rotate_key(
+        db=db,
+        user_id=current_user.id,
+        api_key_external_id=api_key_external_id,
     )

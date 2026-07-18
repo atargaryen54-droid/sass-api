@@ -6,17 +6,18 @@ class ApiKeyCreate(BaseModel):
     name: str
 
 class ApiKeyResponse(BaseModel):
-    id: int
+    external_id: str | None = None
     name: str
     key_prefix: str
     revoked: bool
+    revoked_at: datetime | None = None
     created_at: datetime
 
     class Config:
         from_attributes = True
 
 class ApiKeyRevokedResponse(BaseModel):
-    id: int
+    external_id: str | None = None
     name: str
     key_prefix: str
     revoked: bool

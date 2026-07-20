@@ -1,0 +1,7 @@
+initiating celery worker
+    - celery -A app.core.celery_app.celery_app worker --loglevel=info
+
+api_key for client 3(yotube)
+    - "sk_live_IkYVJP_DrXcrxKCHv1ayQ3BNAXZqwDRSJhL-61n_1Gw"
+
+    

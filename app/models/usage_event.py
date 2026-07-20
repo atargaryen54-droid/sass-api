@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON
+from sqlalchemy import Column, Index, Integer, String, DateTime, ForeignKey, JSON, UniqueConstraint
 from sqlalchemy.sql import func
 from app.core.database import Base
 
@@ -16,6 +16,8 @@ class UsageEvent(Base):
 
     invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=True)
 
+    idempotency_key = Column(String(36), nullable=False)
+
     event_type = Column(String, nullable=False)
 
     quantity = Column(Integer, default=1)
@@ -23,3 +25,8 @@ class UsageEvent(Base):
     event_metadata = Column(JSON, nullable=True)
 
     timestamp = Column(DateTime(timezone=True), server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint("client_id", "idempotency_key", name="uq_client_idempotency"),
+        Index("ix_client_idempotency", "client_id", "idempotency_key"),
+    )

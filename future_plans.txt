@@ -44,3 +44,8 @@ API key management
     1. create a revoke method in services, when revoked_by and reason for revoking are added
     2. last_used at needs to be added as an attribute to api_keys(helps make things transparent)
     3. implement ext_id for projects, clients and users, never expose database ids
+
+* for tomorrow work out pricing_rule, project and usage events like say I used an api key 
+that belongs to a client who is subscribed to say a video generation project, but recorded
+an event saying they generated some image, should the usage_event be recorded or check
+if that event_type is related to the project they are subscribed too. 

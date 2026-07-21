@@ -9,10 +9,14 @@ class InvoiceItem(Base):
 
     invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=False)
 
-    event_type = Column(String, nullable=False)
+    event_type_id = Column(Integer, ForeignKey("event_types.id"), nullable=False)
 
     quantity = Column(Integer, nullable=False)
 
     unit_price = Column(Float, nullable=False)
 
     total = Column(Float, nullable=False)
+
+
+
+

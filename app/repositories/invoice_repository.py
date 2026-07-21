@@ -30,7 +30,7 @@ class InvoiceRepository:
         for item in items:
             invoice_item = InvoiceItem(
                 invoice_id=invoice.id,
-                event_type=item["event_type"],
+                event_type_id=item["event_type_id"],
                 quantity=item["quantity"],
                 unit_price=item["unit_price"],
                 total=item["total"]

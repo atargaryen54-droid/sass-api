@@ -19,7 +19,7 @@ def process_usage_event(event: dict):
             project_id=event["project_id"],
             client_id=event["client_id"],
             api_key_id=event["api_key_id"],
-            event_type=event["event_type"],
+            event_type_id=event["event_type_id"],
             quantity=event["quantity"],
             event_metadata=event.get("metadata"),
             idempotency_key=event["idempotency_key"]

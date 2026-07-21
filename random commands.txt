@@ -1,7 +1,7 @@
 initiating celery worker
     - celery -A app.core.celery_app.celery_app worker --loglevel=info
 
-api_key for client 3(yotube)
+api_key for client 3(youtube)
     - "sk_live_IkYVJP_DrXcrxKCHv1ayQ3BNAXZqwDRSJhL-61n_1Gw"
 
     

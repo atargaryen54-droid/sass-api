@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
@@ -17,3 +17,8 @@ class EventType(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     pricing_rule = relationship("PricingRule", back_populates="event_type", uselist=False)
+
+
+    __table_args__ = (
+        UniqueConstraint("project_id", "event_code", name="uq_project_event_code"),
+    )

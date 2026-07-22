@@ -18,3 +18,8 @@ class EventTypeRepository:
         db.refresh(event_type)
 
         return event_type
+    
+    def get_by_project_id(self, db: Session, project_id: int):
+        return db.query(EventType).filter(
+            EventType.project_id == project_id
+            ).all()

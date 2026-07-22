@@ -45,7 +45,7 @@ API key management
     2. last_used at needs to be added as an attribute to api_keys(helps make things transparent)
     3. implement ext_id for projects, clients and users, never expose database ids
 
-* for tomorrow work out pricing_rule, project and usage events like say I used an api key 
-that belongs to a client who is subscribed to say a video generation project, but recorded
-an event saying they generated some image, should the usage_event be recorded or check
-if that event_type is related to the project they are subscribed too. 
+July 22, 2026
+event_type
+    1. a way to view event_types for a specific project
+    2. a way to create event_types, rename or delete(actually that goes for all my models)

@@ -17,6 +17,7 @@ class Invoice(Base):
     status = Column(String, default="pending")  # pending, paid, failed
 
     period_start = Column(DateTime, nullable=False)
+    
     period_end = Column(DateTime, nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())

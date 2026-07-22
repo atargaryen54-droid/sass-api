@@ -28,18 +28,16 @@ def track_usage(
             detail="Idempotency-Key header is required."
         )
     
-    event_type_id = UsageEventService.check_event(db, event_code=payload.event_code, project_id=client.project_id) 
-
-    event = {
-    "client_id": client.id,
-    "project_id": client.project_id,
-    "api_key_id": api_key.id,  
-    "event_type_id": event_type_id,
-    "quantity": payload.quantity,
-    "idempotency_key": idempotency_key,
-    "metadata": payload.metadata
-    }
-
-    process_usage_event.delay(event)
-
+    UsageEventService.ingest_event(
+        db, 
+        event_code=payload.event_code, 
+        project_id=client.project_id,
+        client_id=client.id,
+        api_key_id=api_key.id,
+        quantity=payload.quantity,
+        idempotency_key=idempotency_key,
+        metadata=payload.metadata
+        ) 
+        
     return {"status": "accepted"}
+   

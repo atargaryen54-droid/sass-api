@@ -12,7 +12,6 @@ class ApiKey(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    # make it not nullable later on
     external_id = Column(String, unique=True, index=True, default=generate_short_id, nullable=False)
 
     client_id = Column(Integer, ForeignKey("clients.id", ondelete="CASCADE"), nullable=False, index=True)

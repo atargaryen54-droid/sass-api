@@ -49,3 +49,12 @@ July 22, 2026
 event_type
     1. a way to view event_types for a specific project
     2. a way to create event_types, rename or delete(actually that goes for all my models)
+
+July 25, 2026
+event_type  
+    1. consider renaming that model event_definiton
+invoice_item
+    1. event_code and event_name in invoice_items need to be snapshotted because a 
+       foreign key reference means name changes if the event_type model changes what
+       it calls that event_type, and as billing is a financial historical data names
+       can't change like that

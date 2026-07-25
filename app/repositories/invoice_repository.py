@@ -1,6 +1,9 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app.models.invoice import Invoice
 from app.models.invoice_item import InvoiceItem
+from app.models.client import Client
+from app.models.project import Project
+import math
 
 
 class InvoiceRepository:
@@ -38,3 +41,46 @@ class InvoiceRepository:
             db.add(invoice_item)
 
         return invoice
+
+    @staticmethod
+    def list_by_user(db: Session, user_id: int, page: int, page_size: int):
+        offset = (page - 1) * page_size
+        query = (
+            db.query(Invoice)
+            .join(Client, Invoice.client_id == Client.id)
+            .join(Project, Client.project_id == Project.id)
+            .filter(Project.user_id == user_id)
+            .order_by(Invoice.created_at.desc())
+        )
+        total_count = query.count()
+
+        invoices = query.offset(offset).limit(page_size).all()
+
+        pages = math.ceil(total_count / page_size)
+
+        return {
+            "page": page,
+            "page_size": page_size,
+            "total": total_count,
+            "pages": pages,
+            "items": invoices,
+        }
+
+
+    @staticmethod
+    def get_detail(db: Session, user_id: int, invoice_external_id: str,):
+        return (
+            db.query(Invoice)
+            .join(Client, Invoice.client_id == Client.id)
+            .join(Project, Client.project_id == Project.id)
+            .options(
+                joinedload(Invoice.client),
+                joinedload(Invoice.invoice_items)
+                    .joinedload(InvoiceItem.event_type)
+            )
+            .filter(
+                Invoice.external_id == invoice_external_id,
+                Project.user_id == user_id,
+            )
+            .first()
+        )

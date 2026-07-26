@@ -8,10 +8,10 @@ class ClientCreate(BaseModel):
     external_id: str | None = None
 
 class ClientResponse(BaseModel):
-    id: int
+    external_id: str 
     name: str
     email: str
-    external_id: str 
+
 
     class Config:
         from_attributes = True

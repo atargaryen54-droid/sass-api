@@ -23,8 +23,7 @@ def create_client(
         project_id = payload.project_id,
         user_id = current_user.id,
         name = payload.name,
-        email = payload.email,
-        external_id=payload.external_id
+        email = payload.email
         )
 
     return client

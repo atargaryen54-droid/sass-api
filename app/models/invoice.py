@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, Float, DateTime, ForeignKey, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
+from app.schemas.enums import InvoiceStatus
 
 def generate_short_id():
     return secrets.token_urlsafe(9)
@@ -19,7 +20,7 @@ class Invoice(Base):
 
     total_amount = Column(Float, nullable=False)
 
-    status = Column(String, default="pending")  # pending, paid, failed
+    status = Column(String, nullable=False, default=InvoiceStatus.GENERATED.value)
 
     period_start = Column(DateTime, nullable=False)
     

@@ -3,7 +3,9 @@ from app.models.invoice import Invoice
 from app.models.invoice_item import InvoiceItem
 from app.models.client import Client
 from app.models.project import Project
+from app.schemas.invoice import InvoiceFilter
 import math
+from app.schemas.enums import InvoiceStatus
 
 
 class InvoiceRepository:
@@ -43,15 +45,37 @@ class InvoiceRepository:
         return invoice
 
     @staticmethod
-    def list_by_user(db: Session, user_id: int, page: int, page_size: int):
+    def list_by_user(db: Session, user_id: int, page: int, page_size: int, filters: InvoiceFilter):
         offset = (page - 1) * page_size
         query = (
             db.query(Invoice)
             .join(Client, Invoice.client_id == Client.id)
             .join(Project, Client.project_id == Project.id)
             .filter(Project.user_id == user_id)
-            .order_by(Invoice.created_at.desc())
         )
+
+        if filters.project_ext_id:
+            query = query.filter(Project.external_id == filters.project_ext_id)
+
+        if filters.client_ext_id:
+            query = query.filter(Client.external_id == filters.client_ext_id)
+
+        if filters.status:
+            status_val = (
+                filters.status.value
+                if isinstance(filters.status, InvoiceStatus)
+                else filters.status
+            )
+            query = query.filter(Invoice.status == status_val)
+
+        if filters.period_start:
+            query = query.filter(Invoice.period_start >= filters.period_start)
+
+        if filters.period_end:
+            query = query.filter(Invoice.period_end <= filters.period_end)  
+
+        query = query.order_by(Invoice.created_at.desc())
+
         total_count = query.count()
 
         invoices = query.offset(offset).limit(page_size).all()

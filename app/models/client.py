@@ -1,7 +1,12 @@
+import secrets
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.sql import func
 from app.core.database import Base
 from sqlalchemy.orm import relationship
+
+
+def generate_short_id():
+    return secrets.token_urlsafe(9)
 
 class Client(Base):
     __tablename__ = "clients"
@@ -14,7 +19,7 @@ class Client(Base):
 
     email = Column(String, nullable=True)
 
-    external_id = Column(String, nullable=True)
+    external_id = Column(String, unique=True, nullable=False, default=generate_short_id)
 
     api_keys = relationship("ApiKey", back_populates="client")
 

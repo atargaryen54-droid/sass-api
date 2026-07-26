@@ -10,6 +10,7 @@ from app.services.invoice_service import InvoiceService
 from app.schemas.invoice import PaginatedInvoices
 from app.schemas.invoice import InvoiceDetailResponse
 from fastapi import Query
+from app.schemas.invoice import InvoiceFilter
 
 
 router = APIRouter(prefix="/invoices", tags=["invoices"])
@@ -49,13 +50,15 @@ def list_invoices(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
     page: int = Query(1, ge=1),
-    page_size: int = Query(10, ge=1, le=100)
+    page_size: int = Query(10, ge=1, le=100),
+    filters: InvoiceFilter = Depends(),
 ):
     return InvoiceService.list_invoices(
         db=db,
         user_id=current_user.id,
         page=page,
-        page_size=page_size
+        page_size=page_size,
+        filters=filters
     )
 
 @router.get("/{invoice_external_id}",response_model=InvoiceDetailResponse)

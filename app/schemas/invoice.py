@@ -1,6 +1,8 @@
 from datetime import datetime  
 from decimal import Decimal
 from pydantic import BaseModel
+from enum import Enum
+from app.schemas.enums import InvoiceStatus
 
 class InvoiceSummary(BaseModel):
     external_id: str
@@ -42,3 +44,15 @@ class PaginatedInvoices(BaseModel):
     items: list[InvoiceSummary]
 
     model_config = {"from_attributes": True}
+
+class InvoiceFilter(BaseModel):
+    project_ext_id: str |None = None
+    client_ext_id: str |None = None
+    status: InvoiceStatus |None = None
+    period_start: datetime |None = None
+    period_end: datetime |None = None   
+
+    model_config = {"from_attributes": True}
+
+
+

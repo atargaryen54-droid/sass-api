@@ -4,7 +4,7 @@ Authentication
     2. password change route and logic along with email change
 
 March 20,2026
-Conveniences/basic management
+**Conveniences/basic management
 
     1. need to have a route to see all the things we create, like users, clients and projects
        aswell as deleting them or revoking them as needed 
@@ -58,3 +58,10 @@ invoice_item
        foreign key reference means name changes if the event_type model changes what
        it calls that event_type, and as billing is a financial historical data names
        can't change like that
+
+July 30, 2026
+payment
+    1. add client_secret_expires_at field, useful when supporting abandoned payments and 
+       clean up jobs
+    2. add payment_provider_config model and make it a foreign key to a project, provider,
+       public_key, encrypted_secret_key, webhook_secrets and enabled as fields

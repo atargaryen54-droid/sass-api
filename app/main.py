@@ -13,7 +13,8 @@ from app.api.routes import usage
 from app.api.routes import pricing
 from app.api.routes import billing
 from app.api.routes import invoices
-
+from app.api.routes import payments
+from app.api.routes import webhooks
 
 
 app = FastAPI()
@@ -26,6 +27,8 @@ app.include_router(usage.router)
 app.include_router(pricing.router)
 app.include_router(billing.router)
 app.include_router(invoices.router)
+app.include_router(payments.router)
+app.include_router(webhooks.router)
 
 
 

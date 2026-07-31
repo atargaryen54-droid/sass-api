@@ -32,6 +32,7 @@ class Invoice(Base):
     client = relationship("Client")
     project = relationship("Project")
     invoice_items = relationship("InvoiceItem", back_populates="invoice")
+    payments = relationship("Payment", back_populates="invoice")
 
     @property
     def client_name(self) -> str:

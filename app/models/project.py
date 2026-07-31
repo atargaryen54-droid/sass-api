@@ -2,6 +2,7 @@ import secrets
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.sql import func
 from app.core.database import Base
+from app.schemas.enums import PaymentProvider
 
 
 
@@ -15,6 +16,8 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     external_id = Column(String, unique=True, nullable=False, default=generate_short_id)
+
+    payment_provider = Column(String, nullable=False, default=PaymentProvider.STRIPE )
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 

@@ -8,3 +8,4 @@ from .pricing_rule import PricingRule
 from .invoice import Invoice
 from .invoice_item import InvoiceItem
 from .event_type import EventType
+from .payment import Payment

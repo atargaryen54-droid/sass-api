@@ -4,4 +4,8 @@ initiating celery worker
 api_key for client 3(youtube)
     - "sk_live_IkYVJP_DrXcrxKCHv1ayQ3BNAXZqwDRSJhL-61n_1Gw"
 
-    
+client_secret
+{
+  "payment_external_id": "sQc9BvmNNB_X",
+  "client_secret": "pi_3TzC9qCJeJyBbamM1yfRhXwU_secret_CjpYV0jxz2KpiTh1T6YjACz5K"
+}

@@ -16,6 +16,14 @@ from app.api.routes import invoices
 from app.api.routes import payments
 from app.api.routes import webhooks
 
+import logging
+
+# Set global log level to INFO
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+)
+
 
 app = FastAPI()
 

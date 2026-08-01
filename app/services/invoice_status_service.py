@@ -9,6 +9,7 @@ class InvoiceStatusService:
             InvoiceStatus.VOIDED,
         },
         InvoiceStatus.PENDING: {
+            InvoiceStatus.PENDING,
             InvoiceStatus.PAID,
             InvoiceStatus.FAILED,
             InvoiceStatus.VOIDED,

@@ -9,3 +9,4 @@ from .invoice import Invoice
 from .invoice_item import InvoiceItem
 from .event_type import EventType
 from .payment import Payment
+from .processed_webhook import ProcessedWebhook

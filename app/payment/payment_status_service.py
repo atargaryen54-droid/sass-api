@@ -14,7 +14,8 @@ class PaymentStatusService:
         PaymentStatus.INITIATED: {
             PaymentStatus.PROCESSING,# User clicked "Pay" (Frontend submitted card)
             PaymentStatus.CANCELLED, # User navigated away / canceled checkout
-            PaymentStatus.SUCCEEDED, # need to figure out the instance where this happens
+            PaymentStatus.SUCCEEDED,
+            PaymentStatus.FAILED # need to figure out the instance where this happens
         },
 
         # 3. Stripe & Bank actively processing the card

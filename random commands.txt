@@ -9,3 +9,5 @@ client_secret
   "payment_external_id": "sQc9BvmNNB_X",
   "client_secret": "pi_3TzC9qCJeJyBbamM1yfRhXwU_secret_CjpYV0jxz2KpiTh1T6YjACz5K"
 }
+
+strpe cli command: stripe listen --forward-to localhost:8000/webhooks/stripe

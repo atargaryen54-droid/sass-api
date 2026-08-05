@@ -1,8 +1,9 @@
 initiating celery worker
     - celery -A app.core.celery_app.celery_app worker --loglevel=info
 
-api_key for client 3(youtube)
-    - "sk_live_IkYVJP_DrXcrxKCHv1ayQ3BNAXZqwDRSJhL-61n_1Gw"
+api_key for 
+    -  sk_live_IkYVJP_DrXcrxKCHv1ayQ3BNAXZqwDRSJhL-61n_1Gw client 3(youtube)
+    -  sk_live_ZlnbOpoQFjDie8MVp2WrUHC06FqrDwxHBtlW5ZRV0sI client 4(meta)
 
 client_secret
 {
@@ -11,3 +12,4 @@ client_secret
 }
 
 strpe cli command: stripe listen --forward-to localhost:8000/webhooks/stripe
+

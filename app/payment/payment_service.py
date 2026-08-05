@@ -57,11 +57,12 @@ class PaymentService:
             payment,
             PaymentStatus.INITIATED,
         )
-
-        InvoiceStatusService.transition_status(
-            invoice,
-            InvoiceStatus.PENDING,
-        )
+        
+        if invoice.status == InvoiceStatus.GENERATED:
+            InvoiceStatusService.transition_status(
+                invoice,
+                InvoiceStatus.PENDING,
+            )
 
         db.commit()
         db.refresh(payment)

@@ -65,3 +65,9 @@ payment
        clean up jobs
     2. add payment_provider_config model and make it a foreign key to a project, provider,
        public_key, encrypted_secret_key, webhook_secrets and enabled as fields
+
+August 4, 2026
+webhooks 
+    1. use uniqueness of webhook events instead of checking for existence to check if an 
+       event is already processed, prevents race condition when two workers are working
+       in parallel 

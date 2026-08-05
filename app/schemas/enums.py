@@ -35,3 +35,11 @@ class PaymentProvider(str, Enum):
     CHAPA = "chapa"
 
     PAYPAL = "paypal"
+
+class BillingFrequency(str, Enum):
+
+    DAILY = "daily"
+
+    WEEKLY = "weekly"
+    
+    MONTHLY = "monthly"

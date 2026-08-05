@@ -2,7 +2,7 @@ import secrets
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.sql import func
 from app.core.database import Base
-from app.schemas.enums import PaymentProvider
+from app.schemas.enums import PaymentProvider, BillingFrequency
 
 
 
@@ -22,6 +22,10 @@ class Project(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     name = Column(String, nullable=False)
+
+    billing_frequency = Column(String, nullable=False, default=BillingFrequency.MONTHLY)
+    
+    next_billing_date = Column(DateTime(timezone=True), nullable=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
  

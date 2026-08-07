@@ -11,7 +11,15 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserResponse)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
-    user = UserService.register_user(db, user_in.email, user_in.password)
+    user = UserService.register_user(
+        db=db, 
+        email=user_in.email, 
+        password=user_in.password,
+        full_name=user_in.full_name,
+        company_name=user_in.company_name,
+        timezone=user_in.timezone,
+        default_currency=user_in.default_currency
+        )
     return user
 
 @router.post("/login", response_model=TokenResponse)

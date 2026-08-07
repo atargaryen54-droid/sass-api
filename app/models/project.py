@@ -25,7 +25,7 @@ class Project(Base):
 
     billing_frequency = Column(String, nullable=False, default=BillingFrequency.MONTHLY)
     
-    next_billing_date = Column(DateTime(timezone=True), nullable=True)
+    next_billing_date = Column(DateTime(timezone=True), nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
  

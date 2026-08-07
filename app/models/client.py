@@ -24,3 +24,5 @@ class Client(Base):
     api_keys = relationship("ApiKey", back_populates="client")
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    project = relationship("Project")

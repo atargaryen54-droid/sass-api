@@ -35,5 +35,6 @@ class UsageEvent(Base):
 
 
     event_type = relationship("EventType")
+    project = relationship("Project")
 
 

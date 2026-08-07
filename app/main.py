@@ -15,6 +15,7 @@ from app.api.routes import billing
 from app.api.routes import invoices
 from app.api.routes import payments
 from app.api.routes import webhooks
+from app.api.routes import dashboard
 
 import logging
 
@@ -37,6 +38,7 @@ app.include_router(billing.router)
 app.include_router(invoices.router)
 app.include_router(payments.router)
 app.include_router(webhooks.router)
+app.include_router(dashboard.router)
 
 
 

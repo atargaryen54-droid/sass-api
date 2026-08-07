@@ -6,7 +6,16 @@ from fastapi import HTTPException, status
 class UserService:
 
     @staticmethod
-    def register_user(db: Session, email: str, password: str):
+    def register_user(
+        db: Session, 
+        email: str, 
+        password: str, 
+        full_name: str, 
+        company_name: str,
+        timezone: str,
+        default_currency: str
+        ):
+    
         email = email.lower()
         existing = UserRepository.get_by_email(db, email)
         if existing:
@@ -16,4 +25,12 @@ class UserService:
             )
 
         password_hash = hash_password(password)
-        return UserRepository.create(db, email, password_hash)
+        return UserRepository.create(
+            db=db, 
+            email=email, 
+            password_hash=password_hash,
+            full_name=full_name,
+            company_name=company_name,
+            timezone=timezone,
+            default_currency=default_currency
+            )

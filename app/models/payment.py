@@ -36,3 +36,5 @@ class Payment(Base):
 
 
     invoice = relationship("Invoice", back_populates="payments")
+    
+    refunds = relationship("Refund", back_populates="payment")

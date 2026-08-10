@@ -38,6 +38,21 @@ class StripeProvider(PaymentProvider):
             secret=settings.stripe_webhook_secret,
         )
 
+    def create_refund(self, payment, amount):
+        refund = stripe.Refund.create(
+            payment_intent=payment.provider_payment_id,
+            amount=self._to_stripe_amount(amount),
+        )
+        return {
+            "provider_refund_id" : refund.id,
+            "status" : refund.status
+        }
+        
+    
+    
+
+
+
 
 
     # @staticmethod

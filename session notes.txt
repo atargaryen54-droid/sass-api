@@ -1,0 +1,4 @@
+1. don't forget to go to refund model and adjust the default status and figure
+   out why status is passed when creating
+
+2. if you send amount to be refunded thru a route use the name "requested_amount"

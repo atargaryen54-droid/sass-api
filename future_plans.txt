@@ -71,3 +71,12 @@ webhooks
     1. use uniqueness of webhook events instead of checking for existence to check if an 
        event is already processed, prevents race condition when two workers are working
        in parallel 
+
+August 8, 2026
+invoice
+    1. think of scenarios where an invoice gets cancelled and make endpoints for it
+
+August 10, 2026
+stripe_currency_conversion
+    1. consider currency conversion for currencies whose smallest amount isn't calculated
+       by multiplying by hunder, the actual currency representation is the smallest amount

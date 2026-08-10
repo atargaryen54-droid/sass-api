@@ -12,15 +12,15 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    external_id = Column(String, unique=True, nullable=True, default=generate_short_id)
+    external_id = Column(String, unique=True, nullable=False, default=generate_short_id)
 
-    full_name = Column(String, nullable=True)
+    full_name = Column(String, nullable=False)
 
-    company_name = Column(String, nullable=True)
+    company_name = Column(String, nullable=False)
 
-    timezone = Column(String, nullable=True, default='UTC')
+    timezone = Column(String, nullable=False, default='UTC')
 
-    default_currency = Column(String, nullable=True, default='USD')
+    default_currency = Column(String, nullable=False, default='USD')
 
     email = Column(String, unique=True, index=True, nullable=False)
 

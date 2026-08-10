@@ -43,3 +43,15 @@ class BillingFrequency(str, Enum):
     WEEKLY = "weekly"
     
     MONTHLY = "monthly"
+
+class RefundStatus(str, Enum):
+
+    CREATED = "created"
+
+    PENDING = "pending"
+
+    SUCCEEDED = "succeeded"
+
+    FAILED = "failed"
+
+    CANCELLED = "cancelled"

@@ -18,3 +18,8 @@ class PaymentProvider(ABC):
     @abstractmethod
     def verify_webhook_signature(self, payload: bytes, signature: str,):
         pass
+
+
+    @abstractmethod
+    def create_refund(self, payment, amount):
+        pass

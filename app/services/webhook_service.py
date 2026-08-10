@@ -91,14 +91,9 @@ class WebhookService:
         
         payment_intent = event["data"]["object"]
         last_error = getattr(payment_intent, "last_payment_error", None)
-        new_reason = getattr(last_error, "message", "Payment failed") if last_error else "Payment failed"
+        reason_of_failure = getattr(last_error, "message", "Payment failed") if last_error else "Payment failed"
 
-        payment.failure_reason = new_reason
-
-        if payment.status == PaymentStatus.FAILED:
-            db.commit()
-            logging.info(f"Updated failure reason for already-failed payment {payment.external_id}")
-            return
+        payment.failure_reason = reason_of_failure
 
         PaymentStatusService.transition_status(
             payment,

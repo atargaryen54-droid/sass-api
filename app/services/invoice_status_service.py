@@ -1,5 +1,6 @@
 from app.schemas.enums import InvoiceStatus
 from app.models.invoice import Invoice
+import logging
 
 
 class InvoiceStatusService:
@@ -12,16 +13,22 @@ class InvoiceStatusService:
             InvoiceStatus.PAID,
             InvoiceStatus.VOIDED,
         },
-        InvoiceStatus.FAILED: {
-            InvoiceStatus.PENDING,
-            InvoiceStatus.VOIDED,
+        InvoiceStatus.PAID:{
+            InvoiceStatus.REFUNDED
+
         },
-        InvoiceStatus.PAID: set(),
+        
+        InvoiceStatus.REFUNDED: set(),
         InvoiceStatus.VOIDED: set(),
     }
 
     @staticmethod
     def transition_status(invoice: Invoice, new_status: InvoiceStatus):
+        if invoice.status == new_status:
+            logging.info(
+                f"invoice {invoice.external_id} already in status {new_status}. Skipping transition (idempotent)."
+            )
+            return False
 
         allowed = InvoiceStatusService.ALLOWED_TRANSITIONS.get(invoice.status, set())
 
@@ -32,5 +39,6 @@ class InvoiceStatusService:
             )
 
         invoice.status = new_status
+        return True
 
     

@@ -32,6 +32,8 @@ class Refund(Base):
 
     reason = Column(String, nullable=True)
 
+    failure_reason = Column(String, nullable=True)
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     update_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

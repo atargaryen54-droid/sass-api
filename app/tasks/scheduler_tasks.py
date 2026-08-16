@@ -6,7 +6,12 @@ from app.core.database import SessionLocal
 from app.services.billing_service import BillingService
 from app.repositories.project_repository import ProjectRepository
 from app.models.project import Project
+from app.services.reconcilliation_service import ReconciliationService
+import logging
+from redis import Redis
 
+
+redis_client = Redis.from_url("redis://localhost:6379/0")
 
 @celery_app.task
 def generate_due_invoices():
@@ -44,3 +49,28 @@ def generate_due_invoices():
         "successful": success_count,
         "failed": failure_count,
     }
+
+
+@staticmethod
+def run_reconciliation():
+    with SessionLocal() as db:
+                ReconciliationService.reconcile_payments(db)
+                ReconciliationService.reconcile_refunds(db)
+                
+@celery_app.task(name="app.tasks.scheduler_tasks.reconcile_with_provider")
+def reconcile_with_provider():
+    # Acquire a 2-minute lock
+    lock = redis_client.lock("reconcile_provider_lock", timeout=120)
+    
+    # Acquires lock non-blockingly; if another worker holds it, skip this cycle
+    if not lock.acquire(blocking=False):
+        logging.info("Reconciliation task already running in another worker. Skipping.")
+        return
+
+    try:
+         run_reconciliation()
+    finally:
+        lock.release()
+
+
+

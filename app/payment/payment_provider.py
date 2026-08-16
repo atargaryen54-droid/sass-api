@@ -23,3 +23,11 @@ class PaymentProvider(ABC):
     @abstractmethod
     def create_refund(self, payment, amount):
         pass
+
+    @abstractmethod
+    def get_payment_status(self, provider_payment_id):
+        pass
+
+    @abstractmethod
+    def get_refund_status(self, provider_refund_id):
+        pass

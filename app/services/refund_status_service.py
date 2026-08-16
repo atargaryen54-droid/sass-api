@@ -1,4 +1,6 @@
 from app.schemas.enums import RefundStatus
+from app.models.refund import Refund
+import logging
 
 class RefundStatusService:
     ALLOWED_TRANSITIONS = {
@@ -31,7 +33,14 @@ class RefundStatusService:
     }
 
     @staticmethod
-    def transition_status(refund, new_status: RefundStatus):
+    def transition_status(refund:Refund, new_status: RefundStatus):
+
+
+        if refund.status == new_status:
+            logging.info(
+                f"Refund {refund.external_id} already in status {new_status}. Skipping transition (idempotent)."
+            )
+            return False
 
         allowed = RefundStatusService.ALLOWED_TRANSITIONS.get(refund.status, set())
 
@@ -42,3 +51,6 @@ class RefundStatusService:
             )
 
         refund.status = new_status
+        return True
+
+    

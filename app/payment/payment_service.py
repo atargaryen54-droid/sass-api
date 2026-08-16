@@ -3,12 +3,15 @@ from sqlalchemy.orm import Session
 from app.payment.provider_factory import PaymentProviderFactory
 from app.repositories.invoice_repository import InvoiceRepository
 from fastapi import HTTPException, status
-from app.schemas.enums import PaymentProvider, PaymentStatus, InvoiceStatus
+from app.schemas.enums import PaymentStatus, InvoiceStatus, RefundStatus
 from app.payment.payment_repository import PaymentRepository
 from app.payment.payment_status_service import PaymentStatusService
 from app.services.invoice_status_service import InvoiceStatusService
 from app.payment.schemas import PaymentFilter
 from app.models.payment  import Payment
+from app.repositories.refund_repository import RefundRepository
+import logging
+
 
 
 class PaymentService:
@@ -125,4 +128,24 @@ class PaymentService:
             )
 
         return PaymentService.create_payment(db, user_id, invoice_external_id)
+
+    @staticmethod
+    def mark_refunded_if_fully_refunded(db, payment_id):
+
+        payment = PaymentRepository.get_by_id(db, payment_id)
+
+        refunds = RefundRepository.list_by_payment(db=db, payment_id=payment_id)
+        refunded_amount = sum(
+            refund.amount
+            for refund in refunds
+            if refund.status == RefundStatus.SUCCEEDED
+        )
+
+        if refunded_amount >= payment.amount:
+            PaymentStatusService.transition_status(payment, PaymentStatus.REFUNDED)
+            InvoiceStatusService.transition_status(payment.invoice, InvoiceStatus.REFUNDED )
+            logging.info(f"payment {payment.external_id} fully refunded")
+
+
+
             

@@ -80,3 +80,14 @@ August 10, 2026
 stripe_currency_conversion
     1. consider currency conversion for currencies whose smallest amount isn't calculated
        by multiplying by hunder, the actual currency representation is the smallest amount
+
+August 12, 2026
+declraing currencies in projects
+    1. make merchants declare their prefered currencies when creating projects, and let 
+       the payment create service deduce it from the project the invoice belongs to and
+       create payments based on that currency
+
+August 14, 2026
+about filters for payment and invoice_items
+    1. be sure think of other ways of filtering, add other criteria
+    2. invoice voiding route

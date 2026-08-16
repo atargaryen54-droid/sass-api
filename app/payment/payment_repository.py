@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func
 from app.models.payment import Payment
 from app.payment.schemas import PaymentFilter
@@ -36,6 +36,26 @@ class PaymentRepository:
                 Payment.external_id == payment_external_id
             )
             .first()
+        )
+    
+    @staticmethod
+    def get_by_id(db:Session, payment_id: int):
+        return(
+            db.query(Payment)
+            .options(joinedload(Payment.invoice))
+            .filter(Payment.id == payment_id).first()
+            )
+
+    @staticmethod
+    def get_reconcilable_payments(db: Session):
+        return(
+            db.query(Payment)
+            .filter(
+                Payment.status.in_([
+                    PaymentStatus.INITIATED,
+                    PaymentStatus.PROCESSING
+                ])
+            ).all()
         )
     
 

@@ -1,4 +1,6 @@
-1. don't forget to go to refund model and adjust the default status and figure
-   out why status is passed when creating
+1. consider scenario where hook comes later than reconciliation, it reconciled say that 
+   the statuses are different, makes changes then the hook that actually changes it comes 
+   along.......... now this will violate the terms in our status services
 
-2. if you send amount to be refunded thru a route use the name "requested_amount"
+
+   

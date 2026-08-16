@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.payment.payment_repository import PaymentRepository
 from fastapi import HTTPException, status
+import logging
 from app.schemas.enums import PaymentStatus, RefundStatus
 from app.repositories.refund_repository import RefundRepository
 from app.payment.provider_factory import PaymentProviderFactory
@@ -26,6 +27,14 @@ class RefundService:
                 status_code = status.HTTP_404_NOT_FOUND,
                 detail = "payment not found"
             )
+        if payment.status == PaymentStatus.REFUNDED:
+            raise HTTPException(
+                status_code = status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail = "Payment already fully refunded"
+            )
+
+
+        
         if payment.status != PaymentStatus.SUCCEEDED:
             raise HTTPException(
                 status_code = status.HTTP_422_UNPROCESSABLE_CONTENT,
@@ -39,6 +48,7 @@ class RefundService:
             if refund.status == RefundStatus.SUCCEEDED
         )
         remaining_amount = payment.amount - refunded_amount
+        
         refund_amount = (
             remaining_amount
             if requested_amount is None
@@ -53,7 +63,7 @@ class RefundService:
         if refund_amount > remaining_amount:
             raise HTTPException(
                 status_code= status.HTTP_422_UNPROCESSABLE_CONTENT,
-                detail="Refund amount exceeds the remaining refundable amount.",
+                detail=f"Refund amount {refund_amount} exceeds the remaining refundable amount {remaining_amount}",
             )
 
         refund = RefundRepository.create(
@@ -62,7 +72,6 @@ class RefundService:
             provider=payment.provider,
             amount=refund_amount,
             currency=payment.currency,
-            status=RefundStatus.PENDING,
             reason=reason,
         )
 
@@ -75,7 +84,7 @@ class RefundService:
             db.rollback()
             raise
 
-        refund.provider_refund_id = result.provider_refund_id
+        refund.provider_refund_id = result.get("provider_refund_id", set())
 
         RefundStatusService.transition_status(
             refund,
@@ -89,12 +98,6 @@ class RefundService:
             "refund_external_id": refund.external_id,
             "status": refund.status
         }
-
-
-
-
-
-
 
 
 

@@ -28,6 +28,12 @@ celery_app.conf.beat_schedule = {
         "task": "app.tasks.scheduler_tasks.generate_due_invoices",
         "schedule": crontab(hour=2, minute=0),
     },
+
+    "reconcile-payments-and-refunds-every-3-minutes": {
+        "task": "app.tasks.scheduler_tasks.reconcile_with_provider",
+        "schedule": 180.0
+
+    }
     
 
     # # TEMPORARY TEST SCHEDULE (Uncomment to test every 30 seconds):

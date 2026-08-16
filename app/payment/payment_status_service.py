@@ -1,4 +1,6 @@
 from app.schemas.enums import PaymentStatus
+from app.models.payment import Payment
+import logging
 
 class PaymentStatusService:
     ALLOWED_TRANSITIONS = {
@@ -14,7 +16,7 @@ class PaymentStatusService:
         PaymentStatus.INITIATED: {
             PaymentStatus.PROCESSING,# User clicked "Pay" (Frontend submitted card)
             PaymentStatus.CANCELLED, # User navigated away / canceled checkout
-            PaymentStatus.SUCCEEDED,
+            PaymentStatus.SUCCEEDED, # For testing purposes there isn't in betwenn processing
             PaymentStatus.FAILED # need to figure out the instance where this happens
         },
 
@@ -25,20 +27,27 @@ class PaymentStatusService:
             PaymentStatus.CANCELLED, # Timed out or canceled during auth
         },
 
-        # 4. Card was declined, but user can re-try with a new card!
-        PaymentStatus.FAILED: {
-            PaymentStatus.PROCESSING,# User enters a new card and hits "Pay" again
-            PaymentStatus.CANCELLED, # User gives up
+        PaymentStatus.SUCCEEDED:{
+            PaymentStatus.REFUNDED
         },
 
-        PaymentStatus.SUCCEEDED: set(),
+
+        PaymentStatus.FAILED: set(),
+
+        PaymentStatus.REFUNDED: set(),
 
         PaymentStatus.CANCELLED: set(),
 
     }
 
     @staticmethod
-    def transition_status(payment, new_status: PaymentStatus):
+    def transition_status(payment:Payment, new_status: PaymentStatus):
+
+        if payment.status == new_status:
+            logging.info(
+                f"Payment {payment.external_id} already in status {new_status}. Skipping transition (idempotent)."
+            )
+            return False
 
         allowed = PaymentStatusService.ALLOWED_TRANSITIONS.get(payment.status, set())
 
@@ -49,3 +58,6 @@ class PaymentStatusService:
             )
 
         payment.status = new_status
+        return True
+
+    

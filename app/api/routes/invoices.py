@@ -11,6 +11,7 @@ from app.schemas.invoice import PaginatedInvoices
 from app.schemas.invoice import InvoiceDetailResponse
 from fastapi import Query
 from app.schemas.invoice import InvoiceFilter
+from app.tasks.scheduler_tasks import generate_due_invoices
 
 
 router = APIRouter(prefix="/invoices", tags=["invoices"])
@@ -71,3 +72,8 @@ def get_invoice(invoice_external_id: str,
         user_id=current_user.id,
         invoice_external_id=invoice_external_id,
     )
+
+@router.post("")
+def generate_due_invoices_manually():
+    return generate_due_invoices()
+

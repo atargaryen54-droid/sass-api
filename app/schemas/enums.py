@@ -10,9 +10,9 @@ class InvoiceStatus(str, Enum):
 
     PAID = "paid"
 
-    FAILED = "failed"
-
     VOIDED = "voided"
+
+    REFUNDED = "refunded"
 
 class PaymentStatus(str, Enum):
 
@@ -27,6 +27,8 @@ class PaymentStatus(str, Enum):
     FAILED = "failed"
 
     CANCELLED = "cancelled"
+
+    REFUNDED = "refunded"
 
 class PaymentProvider(str, Enum):
     

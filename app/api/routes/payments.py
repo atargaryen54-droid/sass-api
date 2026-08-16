@@ -9,6 +9,7 @@ from fastapi import Query
 from app.payment.schemas import PaginatedPayments, PaymentFilter
 from app.schemas.refund import RefundCreate
 from app.services.refund_service import RefundService
+from app.tasks.scheduler_tasks import run_reconciliation
 
 
 router = APIRouter(prefix="/payments", tags=["payments"])
@@ -78,3 +79,10 @@ def create_refund(
         requested_amount = payload.amount,
         reason = payload.reason
     )
+
+@router.post("")
+def reconcile():
+    run_reconciliation()
+    return{
+        "status": "reconciliation completed"
+    }

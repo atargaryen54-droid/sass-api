@@ -10,12 +10,12 @@ from app.api.routes import api_keys
 from app.api.routes import clients
 from app.api.routes import projects
 from app.api.routes import usage
-from app.api.routes import pricing
-from app.api.routes import billing
+from app.api.routes import pricing_rules
 from app.api.routes import invoices
 from app.api.routes import payments
 from app.api.routes import webhooks
 from app.api.routes import dashboard
+from app.api.routes import event_types
 
 import logging
 
@@ -29,12 +29,12 @@ logging.basicConfig(
 app = FastAPI()
 
 app.include_router(auth.router)
-app.include_router(api_keys.router)
-app.include_router(clients.router)
 app.include_router(projects.router)
+app.include_router(clients.router)
+app.include_router(event_types.router)
+app.include_router(pricing_rules.router)
+app.include_router(api_keys.router)
 app.include_router(usage.router)
-app.include_router(pricing.router)
-app.include_router(billing.router)
 app.include_router(invoices.router)
 app.include_router(payments.router)
 app.include_router(webhooks.router)

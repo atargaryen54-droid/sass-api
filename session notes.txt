@@ -1,6 +1,4 @@
-1. consider scenario where hook comes later than reconciliation, it reconciled say that 
-   the statuses are different, makes changes then the hook that actually changes it comes 
-   along.......... now this will violate the terms in our status services
-
-
+1. make cancel payment endpoints
+   - let stripe know it is cancelled
+   - cancel in database too
    

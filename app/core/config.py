@@ -5,11 +5,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 ENV_PATH = os.path.join(BASE_DIR, ".env")
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "postgresql://saas_user:saas_password@localhost:5433/saas_db"
-    SECRET_KEY: str = "supersecretkey"
-    ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
-    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    DATABASE_URL: str 
+    SECRET_KEY: str 
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int 
+    REFRESH_TOKEN_EXPIRE_DAYS: int 
     stripe_secret_key: str
     stripe_webhook_secret: str
     REDIS_URL: str = "redis://localhost:6379/0"

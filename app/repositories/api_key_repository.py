@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.api_key import ApiKey
+from app.models.client import Client
+from app.models.project import Project
 
 class ApiKeyRepository:
 
@@ -44,6 +46,19 @@ class ApiKeyRepository:
             .order_by(ApiKey.created_at.desc())
             .all()
         )
+
+    @staticmethod
+    def get_by_external_id_and_user(db: Session, api_key_external_id: str, user_id: int):
+        return(db.query(ApiKey)
+            .join(Client, ApiKey.client_id == Client.id)
+            .join(Project, Client.project_id == Project.id)
+            .filter(
+                ApiKey.external_id == api_key_external_id,
+                Project.user_id == user_id).first()
+        )
+
+
+    
     
 
     

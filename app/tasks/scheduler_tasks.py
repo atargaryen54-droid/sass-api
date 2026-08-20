@@ -1,14 +1,14 @@
-
+import logging
 from fastapi import logger
 from datetime import datetime, timezone
 from app.core.celery_app import celery_app
 from app.core.database import SessionLocal
-from app.services.billing_service import BillingService
+from redis import Redis
 from app.repositories.project_repository import ProjectRepository
 from app.models.project import Project
 from app.services.reconcilliation_service import ReconciliationService
-import logging
-from redis import Redis
+from app.services.invoice_service import InvoiceService
+
 
 
 redis_client = Redis.from_url("redis://localhost:6379/0")
@@ -36,7 +36,7 @@ def generate_due_invoices():
         try:
             project = project_db.query(Project).get(project_id)
             if project:
-                BillingService.generate_project_billing(project_db, project)
+                InvoiceService.generate_project_billing(project_db, project)
                 success_count += 1
         except Exception:
             failure_count += 1

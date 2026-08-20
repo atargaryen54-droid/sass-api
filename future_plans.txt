@@ -91,3 +91,55 @@ August 14, 2026
 about filters for payment and invoice_items
     1. be sure think of other ways of filtering, add other criteria
     2. invoice voiding route
+
+
+August 17, 2026
+Generalized future improvements
+    Billing
+        - subscriptions
+        - annual billing
+        - coupons
+        - discounts
+        - taxes
+        - usage tiers
+        - minimum charges
+        - custom billing cycles
+
+    Payments
+        - Chapa(adding other providers)
+        - multiple currencies
+        - multiple payment providers
+        - automatic payment methods
+        - saved payment methods
+
+
+    Platform
+        - organizations
+        - teams
+        - roles
+        - permissions
+        - customer portal
+        - API versioning
+        - SDKs
+
+    Analytics
+        - revenue charts
+        - usage trends
+        - client analytics
+        - forecasting
+        - advanced reporting
+
+    API keys
+        - key versioning
+        - last_used
+        - advanced revoke behavior
+
+    Separate authentication(user), personnel and company
+        - user model(email, password)
+        - personnel model
+        - company model
+    
+August 19, 2026
+pagination
+    1. Add pagination when listing clients for a specific user, they are going to be alot
+        

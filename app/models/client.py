@@ -5,6 +5,7 @@ from app.core.database import Base
 from sqlalchemy.orm import relationship
 
 
+
 def generate_short_id():
     return secrets.token_urlsafe(9)
 
@@ -17,7 +18,7 @@ class Client(Base):
 
     name = Column(String, nullable=False)
 
-    email = Column(String, nullable=True)
+    email = Column(String, nullable=False)
 
     external_id = Column(String, unique=True, nullable=False, default=generate_short_id)
 
@@ -25,4 +26,4 @@ class Client(Base):
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    project = relationship("Project")
+    project = relationship("Project", back_populates="clients")

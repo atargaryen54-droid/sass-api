@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class ApiKeyCreate(BaseModel):
-    client_id: int
+    client_external_id: str
     name: str
 
 class ApiKeyResponse(BaseModel):
@@ -10,8 +10,6 @@ class ApiKeyResponse(BaseModel):
     name: str
     key_prefix: str
     revoked: bool
-    revoked_at: datetime | None = None
-    created_at: datetime
 
     class Config:
         from_attributes = True
@@ -23,6 +21,9 @@ class ApiKeyRevokedResponse(BaseModel):
     revoked: bool
     revoked_at: datetime | None = None
     revoked_by: int | None = None
-
     class Config:
         from_attributes = True
+
+class ApiKeyUpdate(BaseModel):
+    name: str | None = None
+    

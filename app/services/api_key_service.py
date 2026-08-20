@@ -13,24 +13,22 @@ from app.models.project import Project
 class ApiKeyService:
     
     @staticmethod
-    def create_api_key(db: Session, user_id: int, client_id: int, name: str):
+    def create_api_key(db: Session, user_id: int, client_external_id: str, name: str):
         
-        # name = name.lower()
+        name = name.lower()
 
-        if (client := ClientRepository.get_by_id(db, client_id)):
-            client_project_id = client.project_id
-        else:
-            raise HTTPException(status_code=404, detail="Client not found")
-        
-        client_project = ProjectRepository.get_by_id(db, client_project_id)
-        
-        if client_project.user_id != user_id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You do not have permission to create keys for this client"
+        client = ClientRepository.get_by_external_id_and_user(
+            db=db, 
+            client_external_id=client_external_id,
+            user_id=user_id
             )
+        if not client:
+            raise HTTPException(
+                status_code=404, 
+                detail="Client not found")
+        
 
-        if ApiKeyRepository.get_by_name_and_client(db, name = name, client_id = client_id ) is not None:
+        if ApiKeyRepository.get_by_name_and_client(db, name = name, client_id = client.id ) is not None:
             raise HTTPException(
             status_code=409, 
             detail=f"active api-key with name '{name}' already exists for this client."
@@ -41,7 +39,7 @@ class ApiKeyService:
 
         new_api_key = ApiKeyRepository.create(
                 db=db,
-                client_id=client_id,
+                client_id=client.id,
                 name=name,
                 prefix=prefix,
                 key_mask=mask,
@@ -68,38 +66,28 @@ class ApiKeyService:
         return raw, prefix, mask, hashed
     
     @staticmethod
-    def list_keys(db: Session, user_id: int, client_id: int):
+    def list_keys(db: Session, user_id: int, client_external_id: int):
 
-        client = (
-            db.query(Client)
-            .join(Project, Client.project_id == Project.id)
-            .filter(
-                Client.id == client_id,
-                Project.user_id == user_id,
-            )
-            .first()
-        )
-
+        client = ClientRepository.get_by_external_id_and_user(
+                    db=db, 
+                    client_external_id=client_external_id,
+                    user_id=user_id
+                    )
         if not client:
             raise HTTPException(
                 status_code=404,
                 detail="Client not found."
             )
 
-        return ApiKeyRepository.get_by_client(db, client_id)
+        return ApiKeyRepository.get_by_client(db, client.id)
     
     @staticmethod
     def revoke_key(db: Session, user_id: int,api_key_external_id: str):
 
-        api_key = (
-            db.query(ApiKey)
-            .join(Client, ApiKey.client_id == Client.id)
-            .join(Project, Client.project_id == Project.id)
-            .filter(
-                ApiKey.external_id == api_key_external_id,
-                Project.user_id == user_id
-            )
-            .first()
+        api_key = ApiKeyRepository.get_by_external_id_and_user(
+            db=db,
+            user_id = user_id,
+            api_key_external_id=api_key_external_id,
         )
 
         if not api_key:
@@ -117,15 +105,10 @@ class ApiKeyService:
     @staticmethod
     def rotate_key(db: Session, user_id: int, api_key_external_id: str):
         
-        api_key = (
-            db.query(ApiKey)
-            .join(Client, ApiKey.client_id == Client.id)
-            .join(Project, Client.project_id == Project.id)
-            .filter(
-                ApiKey.external_id == api_key_external_id,
-                Project.user_id == user_id
-            )
-            .first()
+        api_key = ApiKeyRepository.get_by_external_id_and_user(
+            db=db,
+            user_id = user_id,
+            api_key_external_id=api_key_external_id,
         )
         
         if not api_key:
@@ -162,6 +145,30 @@ class ApiKeyService:
             "message": "API key rotated successfully.",
             "api_key": raw_key 
         }
+
+    @staticmethod
+    def update_api_key(db: Session, api_key_external_id: str, user_id: int, updates:dict):
+        api_key = ApiKeyRepository.get_by_external_id_and_user(
+            db=db,
+            user_id = user_id,
+            api_key_external_id=api_key_external_id,
+        )
+        if not api_key:
+            raise HTTPException(
+                status_code=404,
+                detail="API key not found."
+            )
+        for field,value in updates.items():
+            setattr(api_key, field, value)
+
+        db.commit()
+        db.refresh(api_key)
+
+        return api_key
+
+        
+
+
 
 
     

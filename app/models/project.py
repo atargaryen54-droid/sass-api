@@ -1,5 +1,6 @@
 import secrets
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
 from app.schemas.enums import PaymentProvider, BillingFrequency
@@ -28,4 +29,6 @@ class Project(Base):
     next_billing_date = Column(DateTime(timezone=True), nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    clients = relationship("Client", back_populates="project")
  

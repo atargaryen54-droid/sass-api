@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from app.schemas.enums import PaymentProvider, BillingFrequency
 from typing import Optional
 from datetime import datetime
@@ -11,14 +11,14 @@ class ProjectCreate(BaseModel):
 
 
 class ProjectResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     external_id: str
     name: str
     payment_provider: PaymentProvider
     billing_frequency: BillingFrequency
     next_billing_date: datetime
 
-    class Config:
-        from_attributes = True
+
 
 
 class ProjectUpdate(BaseModel):

@@ -142,6 +142,9 @@ class PaymentService:
         )
 
         if refunded_amount >= payment.amount:
+            if refunded_amount > payment.amount:
+                logging.warning(f"Refunded amount {refunded_amount} exceeds payment amount {payment.amount}")
+
             PaymentStatusService.transition_status(payment, PaymentStatus.REFUNDED)
             InvoiceStatusService.transition_status(payment.invoice, InvoiceStatus.REFUNDED )
             logging.info(f"payment {payment.external_id} fully refunded")

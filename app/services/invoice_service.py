@@ -224,12 +224,17 @@ class InvoiceService:
                 period_start=period_start,
                 period_end=period_end,
             )
+            logging.info(
+                f"Advancing project_id={project.id} next_billing_date "
+                f"from {project.next_billing_date} to {next_date}"
+            )
 
             # 3. Stage date advancement
             project.next_billing_date = next_date
 
             # 4. Commit everything atomically
             db.commit()
+            logging.info(f"Successfully committed billing for project_id={project.id}")
 
         except Exception:
             db.rollback()

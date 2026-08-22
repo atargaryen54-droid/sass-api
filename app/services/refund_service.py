@@ -33,8 +33,6 @@ class RefundService:
                 detail = "Payment already fully refunded"
             )
 
-
-        
         if payment.status != PaymentStatus.SUCCEEDED:
             raise HTTPException(
                 status_code = status.HTTP_422_UNPROCESSABLE_CONTENT,
@@ -45,7 +43,7 @@ class RefundService:
         refunded_amount = sum(
             refund.amount
             for refund in refunds
-            if refund.status == RefundStatus.SUCCEEDED
+            if refund.status in [RefundStatus.SUCCEEDED, RefundStatus.PENDING]
         )
         remaining_amount = payment.amount - refunded_amount
         

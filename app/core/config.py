@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int 
     stripe_secret_key: str
     stripe_webhook_secret: str
-    REDIS_URL: str = "redis://localhost:6379/0"
+    REDIS_URL: str
 
     model_config = SettingsConfigDict(env_file=ENV_PATH)
     

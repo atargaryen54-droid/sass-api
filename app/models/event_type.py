@@ -15,7 +15,7 @@ class EventType(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    external_id = Column(String, unique=True, nullable=True, default=generate_short_id)
+    external_id = Column(String, unique=True, nullable=False, default=generate_short_id)
 
     project_id = Column(Integer, ForeignKey("projects.id"), nullable=False)
 

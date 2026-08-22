@@ -13,7 +13,7 @@ class PricingRule(Base):
 
     id = Column(Integer, primary_key=True)
 
-    external_id = Column(String, unique=True, nullable=True, default=generate_short_id)
+    external_id = Column(String, unique=True, nullable=False, default=generate_short_id)
 
     event_type_id = Column(Integer, ForeignKey("event_types.id"), nullable=False, unique=True)
 

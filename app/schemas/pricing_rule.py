@@ -29,8 +29,6 @@ class PricingRulesByProject(BaseModel):
 
 
 class PricingSummary(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     event_type: str
     price_per_unit: float
-
-    class Config:
-        from_attributes = True

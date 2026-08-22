@@ -22,9 +22,9 @@ class Invoice(Base):
 
     status = Column(String, nullable=False, default=InvoiceStatus.GENERATED.value)
 
-    period_start = Column(DateTime, nullable=False)
+    period_start = Column(DateTime(timezone=True), nullable=False)
     
-    period_end = Column(DateTime, nullable=False)
+    period_end = Column(DateTime(timezone=True), nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

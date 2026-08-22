@@ -107,8 +107,8 @@ class WebhookService:
             return
         
         payment_intent = event["data"]["object"]
-        last_error = getattr(payment_intent, "last_payment_error", None)
-        reason_of_failure = getattr(last_error, "message", "Payment failed") if last_error else "Payment failed"
+        last_error = payment_intent.get("last_payment_error", None)
+        reason_of_failure = last_error.get("message", "Payment failed") if last_error else "Payment failed"
 
         payment.failure_reason = reason_of_failure
 

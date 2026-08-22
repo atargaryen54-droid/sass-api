@@ -1,16 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 from app.schemas.enums import PaymentStatus
 
 class PaymentIntentResult(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     provider_payment_id: str
     client_secret: str
     status: str
-
-
-    class Config:
-        from_attributes = True
-
+    
 class CreatePaymentResponse(BaseModel):
     payment_external_id: str
     client_secret: str

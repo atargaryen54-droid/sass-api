@@ -8,10 +8,11 @@ from app.repositories.project_repository import ProjectRepository
 from app.models.project import Project
 from app.services.reconcilliation_service import ReconciliationService
 from app.services.invoice_service import InvoiceService
+from app.core.config import settings
 
 
 
-redis_client = Redis.from_url("redis://localhost:6379/0")
+redis_client = Redis.from_url(settings.REDIS_URL)
 
 @celery_app.task
 def generate_due_invoices():
@@ -40,7 +41,7 @@ def generate_due_invoices():
                 success_count += 1
         except Exception:
             failure_count += 1
-            logger.exception(f"Failed billing for project_id={project_id}")
+            logger.exception(f"Failed billing for project_id={project.external_id}")
         finally:
             project_db.close()
 

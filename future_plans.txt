@@ -143,9 +143,16 @@ August 19, 2026
 pagination
     1. Add pagination when listing clients for a specific user, they are going to be alot
         
-Augest 21, 2026
+August 21, 2026
 Implement invoice void:
     1. Guard state transition(only pending -> void)
     2. cancel active stripe charges(if a pending payments exists, call stripe's cancel
         end point)
     3. update local database
+
+August 25, 2026
+Money handling
+    1. Change to Decimal instead of float thruout the app
+Payment creation idempotency
+    1. prevent multiple payment creations due to retries by implenting idempotency
+    

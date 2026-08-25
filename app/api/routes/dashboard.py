@@ -11,7 +11,7 @@ from app.services.dashboard_service import DashboardService
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
 
-@router.post("summary", response_model=SummaryResponse)
+@router.post("/summary", response_model=SummaryResponse)
 def get_summary(
         db: Session = Depends(get_db),
         user = Depends(get_current_user)

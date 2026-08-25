@@ -2,7 +2,7 @@ import logging
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 from sqlalchemy import func
@@ -196,53 +196,50 @@ class InvoiceService:
     @staticmethod
     def generate_project_billing(db: Session, project: Project):
         try:
-            # 1. Calculate periods
-            if project.billing_frequency == BillingFrequency.MONTHLY:
-                period_start = project.next_billing_date - relativedelta(months=1)
-                period_end = project.next_billing_date
-                next_date = project.next_billing_date + relativedelta(months=1)
+            current_time = datetime.now(timezone.utc)
 
-            elif project.billing_frequency == BillingFrequency.WEEKLY:
-                period_start = project.next_billing_date - relativedelta(weeks=1)
-                period_end = project.next_billing_date
-                next_date = project.next_billing_date + relativedelta(weeks=1)
+            # Loop until next_billing_date reaches or passes the current time
+            while project.next_billing_date <= current_time:
 
-            elif project.billing_frequency == BillingFrequency.DAILY:
-                period_start = project.next_billing_date - relativedelta(days=1)
-                period_end = project.next_billing_date
-                next_date = project.next_billing_date + relativedelta(days=1)
+                # 1. Calculate periods based on frequency
+                if project.billing_frequency == BillingFrequency.MONTHLY:
+                    delta = relativedelta(months=1)
+                elif project.billing_frequency == BillingFrequency.WEEKLY:
+                    delta = relativedelta(weeks=1)
+                elif project.billing_frequency == BillingFrequency.DAILY:
+                    delta = relativedelta(days=1)
+                else:
+                    raise ValueError(
+                        f"Unsupported billing frequency: {project.billing_frequency}"
+                    )
 
-            else:
-                raise ValueError(
-                    f"Unsupported billing frequency: {project.billing_frequency}"
+                period_start = project.next_billing_date - delta
+                period_end = project.next_billing_date
+                next_date = project.next_billing_date + delta
+
+                # 2. Stage invoice creation for this missed period
+                InvoiceService.generate_invoices(
+                    db=db,
+                    project_id=project.id,
+                    period_start=period_start,
+                    period_end=period_end,
                 )
 
-            # 2. Stage invoice creation
-            InvoiceService.generate_invoices(
-                db=db,
-                project_id=project.id,
-                period_start=period_start,
-                period_end=period_end,
-            )
-            logging.info(
-                f"Advancing project_id={project.id} next_billing_date "
-                f"from {project.next_billing_date} to {next_date}"
-            )
+                logging.info(
+                    f"Advancing project_id={project.id} next_billing_date "
+                    f"from {project.next_billing_date} to {next_date}"
+                )
 
-            # 3. Stage date advancement
-            project.next_billing_date = next_date
+                # 3. Stage date advancement for next iteration
+                project.next_billing_date = next_date
 
-            # 4. Commit everything atomically
+            # 4. Commit all generated invoices and the final date advancement atomically
             db.commit()
-            logging.info(f"Successfully committed billing for project_id={project.id}")
+            logging.info(f"Successfully finished billing for project_id={project.external_id}")
 
         except Exception:
             db.rollback()
-            raise 
-
-
-
-
+            raise
 
 
 

@@ -154,5 +154,5 @@ August 25, 2026
 Money handling
     1. Change to Decimal instead of float thruout the app
 Payment creation idempotency
-    1. prevent multiple payment creations due to retries by implenting idempotency
+    1. prevent multiple payment creations due to retries by implemennting idempotency
     

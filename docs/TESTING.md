@@ -207,9 +207,46 @@ raw coverage percentage.
 
 ---
 
-## Not yet covered
+## `test_usage.py` — usage ingestion
 
-- **`test_usage.py`** — `UsageEventService.ingest_event`: 404 for an
-  unregistered `event_code`, and confirming the Celery task is enqueued
-  with the correct payload (mocked, not actually queued). This is the
-  last item from the original test plan.
+**`UsageEventService.ingest_event`** — 404 for an unregistered
+`event_code`; that scoping is per-project, not global (a code registered
+under a *different* project also 404s here); a valid event enqueues
+`process_usage_event.delay` with exactly the expected payload; and
+`ingest_event` itself never writes a `UsageEvent` row synchronously —
+that's the worker's job, not the request path's.
+
+**`process_usage_event`** (the Celery task, called directly rather than
+through the broker — Celery tasks remain plain callables outside it)
+covers: a real row gets written with the correct fields, including
+metadata; a duplicate `idempotency_key` for the same client is silently
+ignored on redelivery; the same `idempotency_key` for a *different*
+client is **not** deduped, since the unique constraint is scoped
+per-client, not global; and a genuinely unexpected (non-duplicate) error
+rolls back and re-raises so Celery's retry mechanism actually sees it
+failed.
+
+One infrastructure note for future changes to this file: the task opens
+its own DB session via `SessionLocal()` rather than accepting one as a
+parameter, so left alone it talks to the real/dev database instead of the
+test database every fixture here lives in. `TestProcessUsageEventTask`
+has an autouse fixture that patches `app.tasks.usage_tasks.SessionLocal`
+to the test engine for its tests — any new test calling this task
+directly needs to stay inside that class (or get the same treatment) or
+it'll silently hit the wrong database.
+
+**A bug was found and fixed here too:** the task's `except` clause
+originally caught `IntegrityError` broadly, so *any* integrity violation
+— not just the intended duplicate-`idempotency_key` case — was silently
+swallowed and logged as "duplicate ignored." A foreign-key violation
+(e.g. a stale `event_type_id`) would have disappeared with no error and
+no row written, which could mask a real data problem as routine
+deduping. This has since been fixed to isolate the specific
+unique-constraint violation from other integrity errors. The test that
+documented the old (buggy) behavior has been removed, since it no longer
+reflects reality and correct dedup behavior is already covered by the
+duplicate-`idempotency_key` tests above.
+
+That's three real bugs found and fixed across this test-writing pass —
+the `getattr`-on-a-dict issue and the pending-refund gap noted earlier,
+plus this one.

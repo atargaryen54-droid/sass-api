@@ -1,4 +1,5 @@
 import pytest
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
@@ -8,7 +9,7 @@ from app.core.database import Base
 from app.api.deps import get_db
 
 
-TEST_DATABASE_URL = "postgresql://saas_user:saas_password@localhost:5433/saas_db_test"
+TEST_DATABASE_URL = os.getenv("TEST_DATABASE_URL")
 
 
 engine = create_engine(TEST_DATABASE_URL)

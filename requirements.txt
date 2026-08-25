@@ -43,8 +43,9 @@ pydantic_core==2.41.5
 Pygments==2.21.0
 pytest==9.1.1
 pytest-asyncio==1.4.0
+pytest-env==1.7.0
 python-dateutil==2.9.0.post0
-python-dotenv==1.2.1
+python-dotenv==1.2.3
 python-jose==3.5.0
 python-multipart==0.0.22
 redis==7.4.0

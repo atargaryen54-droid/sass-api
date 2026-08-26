@@ -1,26 +1,97 @@
 services:
+
   db:
     image: postgres:15
     container_name: saas_db
     restart: always
+
     environment:
       POSTGRES_USER: saas_user
       POSTGRES_PASSWORD: saas_password
       POSTGRES_DB: saas_db
+
     ports:
       - "5433:5432"
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U saas_user -d saas_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
   cache:
-    image: redis:latest
+    image: redis:7.4
     container_name: redis-server
     restart: always
+
     ports:
       - "6379:6379"
+
     volumes:
       - redis_data:/data
+
     command: redis-server --save 60 1 --loglevel warning
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  api:
+    build: .
+    container_name: saas_api
+    restart: always
+
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - .env.docker
+
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+
+  worker:
+    build: .
+    container_name: saas_worker
+    restart: always
+
+    command: celery -A app.core.celery_app worker --loglevel=info
+
+    env_file:
+      - .env.docker
+
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+
+  beat:
+    build: .
+    container_name: saas_beat
+    restart: always
+
+    command: celery -A app.core.celery_app beat --loglevel=info
+
+    env_file:
+      - .env.docker
+      
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+
 
 volumes:
   postgres_data:

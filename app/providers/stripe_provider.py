@@ -5,7 +5,7 @@ from app.payment.payment_provider import PaymentProvider
 from app.payment.schemas import PaymentIntentResult
 from app.schemas.enums import PaymentStatus, RefundStatus
 
-stripe.api_key = settings.stripe_secret_key
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class StripeProvider(PaymentProvider):
 
@@ -37,7 +37,7 @@ class StripeProvider(PaymentProvider):
         return stripe.Webhook.construct_event(
             payload=payload,
             sig_header=signature,
-            secret=settings.stripe_webhook_secret,
+            secret=settings.STRIPE_WEBHOOK_SECRET,
         )
 
     def create_refund(self, payment, amount):

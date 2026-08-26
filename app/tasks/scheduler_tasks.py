@@ -1,5 +1,4 @@
 import logging
-from fastapi import logger
 from datetime import datetime, timezone
 from app.core.celery_app import celery_app
 from app.core.database import SessionLocal
@@ -11,7 +10,7 @@ from app.services.invoice_service import InvoiceService
 from app.core.config import settings
 
 
-
+logger = logging.getLogger(__name__)
 redis_client = Redis.from_url(settings.REDIS_URL)
 
 @celery_app.task

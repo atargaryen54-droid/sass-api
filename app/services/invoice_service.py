@@ -226,7 +226,7 @@ class InvoiceService:
                 )
 
                 logging.info(
-                    f"Advancing project_id={project.id} next_billing_date "
+                    f"Advancing project_id={project.external_id} next_billing_date "
                     f"from {project.next_billing_date} to {next_date}"
                 )
 

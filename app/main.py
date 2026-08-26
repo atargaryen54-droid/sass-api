@@ -42,9 +42,9 @@ app.include_router(dashboard.router)
 
 
 
-@app.get("/")
+@app.get("/health")
 def health_check():
-    return {"status":"alive"}
+    return {"status": "ok"}
 
 @app.get("/db-check")
 def db_check():

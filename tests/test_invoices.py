@@ -359,7 +359,8 @@ class TestGenerateProjectBilling:
         ],
     )
     def test_period_and_rollover_math(self, db, frequency, delta_kwargs):
-        anchor = datetime(2026, 3, 15, tzinfo=timezone.utc)
+        now = datetime.now(timezone.utc)
+        anchor = now.replace(minute=0, second=0, microsecond=0) 
         project = make_project(db, billing_frequency=frequency, next_billing_date=anchor)
         client = make_client(db, project)
         event_type = make_event_type(db, project)

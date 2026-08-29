@@ -84,6 +84,8 @@ The goal of this project is not simply to demonstrate API development, but to sh
 * Separate CI and CD workflows ensure deployment uses tested application artifacts.
 * Production configuration uses immutable Docker image tags for reproducible deployments.
 
+
+
 ## Architecture
 
 The application follows a layered backend architecture designed to keep HTTP concerns, business logic, data access, and background processing clearly separated.
@@ -274,6 +276,8 @@ Together, these mechanisms focus on a central goal of the system: ensuring that 
 
 For a detailed discussion of architectural decisions, domain workflows, and design trade-offs, see [`docs/architecture.md`](docs/architecture.md).
 
+
+
 ## Technology Stack
 
 ### Backend
@@ -330,6 +334,8 @@ For a detailed discussion of architectural decisions, domain workflows, and desi
 ### Administration
 
 * **SQLAdmin** for database administration and internal model management
+
+
 
 ## Getting Started
 
@@ -457,6 +463,8 @@ The interactive documentation allows you to explore available endpoints, inspect
 
 For a higher-level overview of the API and its workflows, see [`docs/api.md`](docs/api.md).
 
+
+
 ## Configuration
 
 The application uses environment variables for configuration. Sensitive configuration files are excluded from version control.
@@ -487,6 +495,8 @@ Example environment files are provided as templates:
 | `TEST_DATABASE_URL` | PostgreSQL connection URL used by the test suite |
 
 > Never commit real secrets, production credentials, or environment-specific configuration files to the repository.
+
+
 
 ## Testing
 
@@ -557,6 +567,8 @@ Writing the test suite uncovered and helped fix several real bugs in the applica
 These issues were identified through business-logic tests designed to validate realistic workflows and edge cases rather than simply checking whether code executed without errors.
 
 For a detailed breakdown of the testing strategy and individual test suites, see [`docs/testing.md`](docs/testing.md).
+
+
 
 ## Background Processing
 
@@ -701,6 +713,8 @@ The production environment runs the application as separate services:
 ```
 
 Separating the API, worker, and scheduler into independent containers allows each component to operate according to its own responsibility while sharing the same application codebase and infrastructure.
+
+
 
 ## CI/CD Pipeline
 
@@ -944,6 +958,8 @@ The production Docker Compose configuration defines the services and infrastruct
 
 This separation allows the deployment architecture to remain portable. Moving the application from the local production-like environment to a VPS would primarily involve changing the hosting infrastructure and production configuration rather than rebuilding or redesigning the application itself.
 
+
+
 ## API Documentation
 
 The API is documented at two levels.
@@ -1008,6 +1024,8 @@ For a deeper explanation of the major API workflows and how the different parts 
 * [`API Guide`](docs/api-guide.md)
 
 The API guide focuses on workflows such as authentication, API-key usage, asynchronous usage ingestion, billing, payments, refunds, webhooks, and reconciliation rather than duplicating the endpoint reference generated automatically by FastAPI.
+
+
 
 ## Future Improvements
 
@@ -1104,6 +1122,8 @@ Potential improvements include:
 * Improved developer tooling and integration workflows
 
 The goal of these improvements is not simply to add features, but to evolve the platform while preserving the separation of responsibilities and architectural boundaries established in the current implementation.
+
+
 
 ## License
 

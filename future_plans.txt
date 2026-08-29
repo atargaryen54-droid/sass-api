@@ -109,7 +109,7 @@ Generalized future improvements
         - Chapa(adding other providers)
         - multiple currencies
         - multiple payment providers
-        - automatic payment methods
+        - automatic payment methods 
         - saved payment methods
 
 

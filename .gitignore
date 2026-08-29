@@ -7,10 +7,16 @@ ENV/
 .env.*
 !.env.example
 !.env.test.example
+!.env.docker.example
 
 # Python cache
 __pycache__/
 *.py[cod]
+
+#personal_files
+random_commands.txt
+session_notes.txt
+
 
 # OS files
 .DS_Store

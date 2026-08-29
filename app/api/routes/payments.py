@@ -81,7 +81,7 @@ def create_refund(
     )
 
 @router.post("")
-def reconcile():
+def reconcile_manually():
     run_reconciliation()
     return{
         "status": "reconciliation completed"

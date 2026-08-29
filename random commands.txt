@@ -43,3 +43,15 @@ our deployment triggers can be explained by:
        code reaches the protected main branch. The deployment uses an immutable container image,
        applies pending Alembic migrations, starts the application services, and verifies the 
        deployment through a health check."
+
+CI and CD difference beatifully explained
+
+        CI answers:
+
+        "Is this code good enough to build?"
+
+        Tests + Docker build.
+
+        CD answers:
+
+        "Did the new version actually become healthy?"

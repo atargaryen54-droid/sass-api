@@ -16,4 +16,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+#personal_notes
+session_notes.txt
+future_plans.txt
+random_commands.txt
+
 source/

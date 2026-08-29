@@ -38,7 +38,7 @@ services:
 
 
   api:
-    image: ghcr.io/atargaryan54-droid/sass-api:8095cd02a88a71a279dfcb7187edb0f512841110
+    image: ghcr.io/atargaryen54-droid/sass-api:${IMAGE_TAG}
     container_name: saas_api
     restart: always
 
@@ -63,7 +63,7 @@ services:
 
 
   worker:
-    image: ghcr.io/atargaryan54-droid/sass-api:8095cd02a88a71a279dfcb7187edb0f512841110
+    image: ghcr.io/atargaryen54-droid/sass-api:${IMAGE_TAG}
     container_name: saas_worker
     restart: always
 
@@ -87,7 +87,7 @@ services:
 
 
   beat:
-    image: ghcr.io/atargaryan54-droid/sass-api:8095cd02a88a71a279dfcb7187edb0f512841110
+    image: ghcr.io/atargaryen54-droid/sass-api:${IMAGE_TAG}
     container_name: saas_beat
     restart: always
 

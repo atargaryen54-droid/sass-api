@@ -1065,7 +1065,7 @@ The system also uses API keys for client usage ingestion, separating user authen
 
 For a deeper explanation of the major API workflows and how the different parts of the system interact, see:
 
-* [`API Guide`](docs/api-guide.md)
+* [`API Guide`](docs/api.md)
 
 The API guide focuses on workflows such as authentication, API-key usage, asynchronous usage ingestion, billing, payments, refunds, webhooks, and reconciliation rather than duplicating the endpoint reference generated automatically by FastAPI.
 

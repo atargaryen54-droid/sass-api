@@ -544,17 +544,61 @@ This approach keeps the suite focused on the parts of the system where correctne
 
 ### Running the Tests
 
-Configure the test database environment:
+The default test workflow runs the test suite inside the Docker environment.
+
+#### 1. Configure the Test Environment
+
+Create the test environment file:
 
 ```bash
 cp .env.test.example .env.test
 ```
 
-Then run the test suite:
+The default Docker configuration uses the PostgreSQL service hostname:
+
+```env
+TEST_DATABASE_URL=postgresql://saas_user:saas_password@db:5432/saas_db_test
+```
+
+#### 2. Create the Test Database
+
+Start the application services:
+
+```bash
+docker compose up -d
+```
+
+Create the test database:
+
+```bash
+docker compose exec db createdb -U saas_user saas_db_test
+```
+If the database already exists, this step can be skipped.
+
+#### 3. Run the Tests
+
+Run the test suite inside the API container:
+
+```bash
+docker compose exec api pytest
+```
+
+#### Running Tests on the Host Machine
+
+If you are running the application and PostgreSQL directly on your host machine rather than through Docker, update the database hostname in `.env.test` from `db` to `localhost`.
+
+For example:
+
+```env
+TEST_DATABASE_URL=postgresql://saas_user:saas_password@localhost:5433/saas_db_test
+```
+
+Then run:
 
 ```bash
 pytest
 ```
+
 
 ### Bugs Found Through Testing
 
